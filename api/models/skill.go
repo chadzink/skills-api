@@ -12,7 +12,7 @@ type Skill struct {
 	Categories []*Category `gorm:"many2many:skill_category;"`
 }
 
-// Example of skill in JSON
+// Example of skills in JSON
 /*
 [
 	{
