@@ -47,21 +47,12 @@ func (dal *DataAccessLayer) UpdateSkillById(id uint, skill *models.Skill) error 
 
 	dal.Db.Model(&models.Skill{}).Where("id = ?", id).Updates(&skill)
 
+	// Set the id to the existing id
+	skill.ID = id
+
 	// Check if the category association has was passed in
 	if len(skill.Categories) > 0 {
-		// First remove the old associations
-		err = dal.Db.Model(&skill).Association("Categories").Clear()
-		if err != nil {
-			return err
-		}
-
-		// Then add the new associations
-		for _, category := range skill.Categories {
-			err = dal.Db.Model(&skill).Association("Categories").Append(&category)
-			if err != nil {
-				return err
-			}
-		}
+		dal.Db.Save(&skill).Association("Categories").Replace(skill.Categories)
 	}
 
 	return nil

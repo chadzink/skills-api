@@ -29,7 +29,7 @@ func (dal *DataAccessLayer) GetAllCategories() ([]models.Category, error) {
 }
 
 // Get a category by id and pre-load the skills
-func (dal *DataAccessLayer) GetCategoryById(id string) (models.Category, error) {
+func (dal *DataAccessLayer) GetCategoryById(id uint) (models.Category, error) {
 	var category models.Category
 
 	err := dal.Db.Model(&models.Category{}).Preload("Skills").First(&category, id).Error
@@ -37,7 +37,7 @@ func (dal *DataAccessLayer) GetCategoryById(id string) (models.Category, error) 
 }
 
 // Update a category by id and rebuild the association with skills
-func (dal *DataAccessLayer) UpdateCategoryById(id string, category *models.Category) error {
+func (dal *DataAccessLayer) UpdateCategoryById(id uint, category *models.Category) error {
 	var existingCategory models.Category
 	err := dal.Db.Model(&models.Category{}).First(&existingCategory, id).Error
 	if err != nil {
@@ -48,26 +48,14 @@ func (dal *DataAccessLayer) UpdateCategoryById(id string, category *models.Categ
 
 	// Check if the skill association has was passed in
 	if len(category.Skills) > 0 {
-		// First remove the old associations
-		err = dal.Db.Model(&category).Association("Skills").Clear()
-		if err != nil {
-			return err
-		}
-
-		// Then add the new associations
-		for _, skill := range category.Skills {
-			err = dal.Db.Model(&category).Association("Skills").Append(&skill)
-			if err != nil {
-				return err
-			}
-		}
+		dal.Db.Save(&category).Association("Skills").Replace(category.Skills)
 	}
 
 	return nil
 }
 
 // Delete a category by id and remove the association with skills
-func (dal *DataAccessLayer) DeleteCategoryById(id string) error {
+func (dal *DataAccessLayer) DeleteCategoryById(id uint) error {
 	var category models.Category
 	err := dal.Db.Model(&models.Category{}).First(&category, id).Error
 	if err != nil {

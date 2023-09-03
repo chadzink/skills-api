@@ -11,15 +11,12 @@ func CreateCategory(c *fiber.Ctx) error {
 	category := new(models.Category)
 
 	if err := c.BodyParser(category); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    category,
-		})
+		return ErorrAndDataResponse(c, err, category)
 	}
 
 	database.DAL.CreateCategory(category)
 
-	return c.Status(200).JSON(category)
+	return DataResponse(c, category)
 }
 
 // CreateCategories creates one or more new category entities
@@ -27,10 +24,7 @@ func CreateCategories(c *fiber.Ctx) error {
 	parsedCategories := new([]models.Category)
 
 	if err := c.BodyParser(parsedCategories); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    parsedCategories,
-		})
+		return ErorrAndDataResponse(c, err, parsedCategories)
 	}
 
 	createdCategories := make([]models.Category, len(*parsedCategories))
@@ -40,23 +34,23 @@ func CreateCategories(c *fiber.Ctx) error {
 		createdCategories[index] = category
 	}
 
-	return c.Status(200).JSON(createdCategories)
+	return DataResponse(c, createdCategories)
 }
 
 // ListCategory lists a category by id
 func ListCategory(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id, err := GetValidId(c)
+	if err != nil {
+		return HandleInvalidId(c, err)
+	}
 
 	category, err := database.DAL.GetCategoryById(id)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    category,
-		})
+		return ErorrAndDataResponse(c, err, category)
 	}
 
-	return c.Status(200).JSON(category)
+	return DataResponse(c, category)
 }
 
 // ListCategories lists all categories
@@ -66,52 +60,46 @@ func ListCategories(c *fiber.Ctx) error {
 	categories, err := database.DAL.GetAllCategories()
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    categories,
-		})
+		return ErorrAndDataResponse(c, err, categories)
 	}
 
-	return c.Status(200).JSON(categories)
+	return DataResponse(c, categories)
 }
 
 // UpdateCategory updates a category by id
 func UpdateCategory(c *fiber.Ctx) error {
-	id := c.Params("id")
+	id, err := GetValidId(c)
+	if err != nil {
+		return HandleInvalidId(c, err)
+	}
 
 	category := new(models.Category)
 
 	if err := c.BodyParser(category); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    category,
-		})
+		return ErorrAndDataResponse(c, err, category)
 	}
 
-	err := database.DAL.UpdateCategoryById(id, category)
+	err = database.DAL.UpdateCategoryById(id, category)
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    category,
-		})
+		return ErorrAndDataResponse(c, err, category)
 	}
 
-	return c.Status(200).JSON(category)
+	return DataResponse(c, category)
 }
 
 // DeleteCategory deletes a category by id
 func DeleteCategory(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	err := database.DAL.DeleteCategoryById(id)
-
+	id, err := GetValidId(c)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    id,
-		})
+		return HandleInvalidId(c, err)
 	}
 
-	return c.Status(200).JSON(id)
+	err = database.DAL.DeleteCategoryById(id)
+
+	if err != nil {
+		return ErorrAndDataResponse(c, err, id)
+	}
+
+	return DeletedResponse(c, "Category deleted", id)
 }
