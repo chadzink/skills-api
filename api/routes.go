@@ -25,4 +25,12 @@ func setupRoutes(app *fiber.App) {
 	// batch features
 	app.Get("/categories", handlers.ListCategories)
 	app.Post("/categories", handlers.CreateCategories)
+
+	// CRUD for person entity
+	app.Post("/person", handlers.CreatePerson)
+	app.Get("/person/:id", handlers.ListPerson)
+	app.Post("/person/:id", handlers.UpdatePerson)
+	app.Delete("/person/:id", handlers.DeletePerson)
+	// batch features
+	app.Get("/people", handlers.ListPeople)
 }

@@ -40,6 +40,8 @@ func ConnectDb() {
 	log.Println("running migrations")
 	db.AutoMigrate(&models.Skill{})
 	db.AutoMigrate(&models.Category{})
+	db.AutoMigrate(&models.Person{})
+	db.AutoMigrate(&models.PersonSkill{})
 
 	DAL = DataAccessLayer{
 		Db: db,

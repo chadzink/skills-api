@@ -49,6 +49,8 @@ erDiagram
         deleted_at timestamp
         email text
         name text
+        phone text
+        profile text
     }
 
     teams {
@@ -103,10 +105,11 @@ erDiagram
     people ||--o{ person_team : "person_id"
     teams ||--o{ person_team : "team_id"
 
-    person_skill {
+    person_skills {
         person_id bigint fk
         skill_id bigint fk
         expertise_id bigint fk
+        last_used datetime
     }
 
     people ||--o{ person_skill : "person_id"
