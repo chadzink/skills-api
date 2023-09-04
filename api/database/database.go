@@ -11,11 +11,11 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type Dbinstance struct {
+type DataAccessLayer struct {
 	Db *gorm.DB
 }
 
-var DB Dbinstance
+var DAL DataAccessLayer
 
 func ConnectDb() {
 	dsn := fmt.Sprintf(
@@ -40,15 +40,10 @@ func ConnectDb() {
 	log.Println("running migrations")
 	db.AutoMigrate(&models.Skill{})
 	db.AutoMigrate(&models.Category{})
+	db.AutoMigrate(&models.Person{})
+	db.AutoMigrate(&models.PersonSkill{})
 
-	DB = Dbinstance{
+	DAL = DataAccessLayer{
 		Db: db,
 	}
-}
-
-// Get all categories and pre-load the skills
-func (dbInstance *Dbinstance) GetAllCategories() ([]models.Category, error) {
-	var categories []models.Category
-	err := dbInstance.Db.Model(&models.Category{}).Preload("Skills").Find(&categories).Error
-	return categories, err
 }

@@ -6,65 +6,99 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// CreateSkill creates a new skill entity
 func CreateSkill(c *fiber.Ctx) error {
 	skill := new(models.Skill)
 
 	if err := c.BodyParser(skill); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    skill,
-		})
+		return ErorrAndDataResponse(c, err, skill)
 	}
 
-	database.DB.Db.Create(&skill)
+	database.DAL.CreateSkill(skill)
 
-	return c.Status(200).JSON(skill)
+	return DataResponse(c, skill)
 }
 
+// CreateSkills creates one or more new skill entities
 func CreateSkills(c *fiber.Ctx) error {
 	parsedSkills := new([]models.Skill)
 
 	if err := c.BodyParser(parsedSkills); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    parsedSkills,
-		})
+		return ErorrAndDataResponse(c, err, parsedSkills)
 	}
 
 	createdSkills := make([]models.Skill, len(*parsedSkills))
 
 	for index, skill := range *parsedSkills {
-		database.DB.Db.Create(&skill)
+		database.DAL.CreateSkill(&skill)
 		createdSkills[index] = skill
 	}
 
-	return c.Status(200).JSON(createdSkills)
+	return DataResponse(c, createdSkills)
 }
 
+// ListSkill lists a skill by id
 func ListSkill(c *fiber.Ctx) error {
-	id := c.Params("id")
-
-	skill, err := database.DB.GetSkillById(id)
-
+	id, err := GetValidId(c)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    skill,
-		})
+		return HandleInvalidId(c, err)
 	}
 
-	return c.Status(200).JSON(skill)
+	skill, err := database.DAL.GetSkillById(id)
+
+	if err != nil {
+		return ErorrAndDataResponse(c, err, skill)
+	}
+
+	return DataResponse(c, skill)
 }
 
+// ListSkills lists all skills
 func ListSkills(c *fiber.Ctx) error {
-	skills, err := database.DB.GetAllSkills()
+	// TO DO: Add paging to this endpoint
+
+	skills, err := database.DAL.GetAllSkills()
 
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-			"data":    skills,
-		})
+		return ErorrAndDataResponse(c, err, skills)
 	}
 
-	return c.Status(200).JSON(skills)
+	return DataResponse(c, skills)
+}
+
+// UpdateSkill updates a skill by id
+func UpdateSkill(c *fiber.Ctx) error {
+	id, err := GetValidId(c)
+	if err != nil {
+		return HandleInvalidId(c, err)
+	}
+
+	skill := new(models.Skill)
+
+	if err := c.BodyParser(skill); err != nil {
+		return ErorrAndDataResponse(c, err, skill)
+	}
+
+	if err := database.DAL.UpdateSkillById(id, skill); err != nil {
+		return ErorrAndDataResponse(c, err, skill)
+	}
+
+	// Assign the id to the skill
+	skill.ID = id
+
+	return DataResponse(c, skill)
+}
+
+// DeleteSkill deletes a skill by id
+func DeleteSkill(c *fiber.Ctx) error {
+	id, err := GetValidId(c)
+	if err != nil {
+		return HandleInvalidId(c, err)
+	}
+
+	if err := database.DAL.DeleteSkillById(id); err != nil {
+		return ErorrAndDataResponse(c, err, id)
+	}
+
+	return DeletedResponse(c, "Skill deleted", id)
 }
