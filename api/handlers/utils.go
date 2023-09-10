@@ -7,6 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type ResponseResult struct {
+	Data    map[string]interface{} `json:"data"`
+	Success bool                   `json:"success"`
+	Message string                 `json:"message"`
+}
+
+type ResponseResults struct {
+	ResponseResult
+	Data []map[string]interface{} `json:"data"`
+}
+
 func GetValidId(c *fiber.Ctx) (uint, error) {
 	value64, err := strconv.ParseUint(c.Params("id"), 10, 0)
 	var value = uint(value64)
