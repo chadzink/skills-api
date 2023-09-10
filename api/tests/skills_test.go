@@ -129,6 +129,11 @@ func TestReadSkill(t *testing.T) {
 
 	// Check if the response returned the correct data Name property
 	assert.Equal(t, testSkillData[0]["name"], respSkill.Name)
+
+	// Check if the skill was found in the database
+	if _, err := database.DAL.GetSkillById(skillAdded.ID); err != nil {
+		t.Error(err)
+	}
 }
 
 // TestUpdateSkill tests the POST /skill/:id route
