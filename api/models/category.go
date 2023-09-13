@@ -10,6 +10,9 @@ type Category struct {
 	Active      bool   `json:"active" gorm:"bit;not null;default:1`
 
 	Skills []*Skill `gorm:"many2many:skill_category;"`
+
+	// Additional fields that are not stored in the database
+	SkillIds []uint `json:"skill_ids" gorm:"-"`
 }
 
 // Example of categories in JSON

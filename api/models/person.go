@@ -14,6 +14,9 @@ type Person struct {
 	Profile string `json:"profile" gorm:"text;null;default:null`
 
 	Skills []*Skill `gorm:"many2many:person_skills;"`
+
+	// Additional fields that are not stored in the database
+	PersonSkills []PersonSkill `json:"person_skills" gorm:"-"`
 }
 
 type PersonSkill struct {
