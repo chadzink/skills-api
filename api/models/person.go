@@ -13,7 +13,10 @@ type Person struct {
 	Phone   string `json:"phone" gorm:"text;null;default:null`
 	Profile string `json:"profile" gorm:"text;null;default:null`
 
-	Skills []*Skill `gorm:"many2many:person_skills;"`
+	Skills []*Skill `json:"skills" gorm:"many2many:person_skills;"`
+
+	// Additional fields that are not stored in the database
+	PersonSkills []PersonSkill `json:"person_skills" gorm:"-"`
 }
 
 type PersonSkill struct {

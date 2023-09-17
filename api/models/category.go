@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Category struct {
 	gorm.Model
@@ -9,7 +11,10 @@ type Category struct {
 	ShortKey    string `json:"short_key" gorm:"varchar(10);not null;default:null`
 	Active      bool   `json:"active" gorm:"bit;not null;default:1`
 
-	Skills []*Skill `gorm:"many2many:skill_category;"`
+	Skills []*Skill `json:"skills" gorm:"many2many:skill_category;"`
+
+	// Additional fields that are not stored in the database
+	SkillIds []uint `json:"skill_ids" gorm:"-"`
 }
 
 // Example of categories in JSON

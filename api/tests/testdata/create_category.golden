@@ -1,0 +1,35 @@
+{
+	"data": {
+		"ID": 5,
+		"active": true,
+		"description": "Construction is the process of constructing a building or infrastructure.",
+		"name": "Construction",
+		"short_key": "construction",
+		"skill_ids": [
+			1,
+			2
+		],
+		"skills": [
+			{
+				"ID": 1,
+				"active": true,
+				"categories": null,
+				"category_ids": null,
+				"description": "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+				"name": "Go",
+				"short_key": "go"
+			},
+			{
+				"ID": 2,
+				"active": true,
+				"categories": null,
+				"category_ids": null,
+				"description": "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
+				"name": "JavaScript",
+				"short_key": "js"
+			}
+		]
+	},
+	"success": true,
+	"message": ""
+}

@@ -1,0 +1,45 @@
+{
+	"data": {
+		"ID": 4,
+		"email": "richard@email.com",
+		"name": "Richard",
+		"person_skills": [
+			{
+				"expertise_id": 0,
+				"last_used": "0001-01-01T00:00:00Z",
+				"person_id": 4,
+				"skill_id": 3
+			},
+			{
+				"expertise_id": 0,
+				"last_used": "0001-01-01T00:00:00Z",
+				"person_id": 4,
+				"skill_id": 4
+			}
+		],
+		"phone": "555-555-5544",
+		"profile": "Drew is a civil engineer with 15 years of experience.",
+		"skills": [
+			{
+				"ID": 3,
+				"active": true,
+				"categories": null,
+				"category_ids": null,
+				"description": "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
+				"name": "Python",
+				"short_key": "py"
+			},
+			{
+				"ID": 4,
+				"active": true,
+				"categories": null,
+				"category_ids": null,
+				"description": "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere, meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.",
+				"name": "Java",
+				"short_key": "java"
+			}
+		]
+	},
+	"success": true,
+	"message": ""
+}

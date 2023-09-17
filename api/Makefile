@@ -2,3 +2,6 @@
 
 test:
 	go test ./tests/... -v
+
+test-short:
+	go test ./tests/... -v -test.short

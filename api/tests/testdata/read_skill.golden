@@ -1,0 +1,25 @@
+{
+	"data": {
+		"ID": 5,
+		"active": true,
+		"categories": [
+			{
+				"ID": 2,
+				"active": true,
+				"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
+				"name": "Databases",
+				"short_key": "db",
+				"skill_ids": null,
+				"skills": null
+			}
+		],
+		"category_ids": [
+			2
+		],
+		"description": "Drywall mudding is the process of applying drywall mud to drywall seams.",
+		"name": "Drywall Mudding",
+		"short_key": "drywall-mudding"
+	},
+	"success": true,
+	"message": ""
+}
