@@ -23,6 +23,7 @@ var TEST_DATA_CATEGORIES = []models.Category{
 		Description: "Construction is the process of constructing a building or infrastructure.",
 		ShortKey:    "construction",
 		Active:      true,
+		SkillIds:    []uint{1, 2},
 	},
 	{
 		Name:        "Leadership",
@@ -70,6 +71,14 @@ func (suite *TestWithDbSuite) TestCreateCategory() {
 
 	// Confirm that the category in the response matches the category in the database
 	assert.Equal(suite.T(), respCategory.Name, TEST_DATA_CATEGORIES[0].Name)
+
+	// Check if the new category in database is linked to the skills in the id list
+	if category, err := database.DAL.GetCategoryById(respCategory.ID); err != nil {
+		suite.T().Error(err)
+	} else {
+		assert.Equal(suite.T(), category.Skills[0].ID, TEST_DATA_CATEGORIES[0].SkillIds[0])
+		assert.Equal(suite.T(), category.Skills[1].ID, TEST_DATA_CATEGORIES[0].SkillIds[1])
+	}
 }
 
 // Test to get a category by Id

@@ -22,6 +22,14 @@ var TEST_DATA_PERSON = []models.Person{
 		Email:   "dave@email.com",
 		Phone:   "555-555-5522",
 		Profile: "Dave is a software developer with 5 years of experience.",
+		PersonSkills: []models.PersonSkill{
+			{
+				SkillID: 1,
+			},
+			{
+				SkillID: 2,
+			},
+		},
 	}, {
 		Name:    "Dan",
 		Email:   "dan@email.com",

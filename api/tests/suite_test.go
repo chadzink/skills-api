@@ -91,21 +91,33 @@ func seedDatabase(dal *database.DataAccessLayer) {
 	testData := TestData{
 		categories: []models.Category{
 			{
+				Model: gorm.Model{
+					ID: 1,
+				},
 				Name:        "Programming Language",
 				Description: "A programming language is a formal language comprising a set of instructions that produce various kinds of output. Programming languages are used in computer programming to implement algorithms.",
 				ShortKey:    "prog_lang",
 				Active:      true,
 			}, {
+				Model: gorm.Model{
+					ID: 2,
+				},
 				Name:        "Databases",
 				Description: "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
 				ShortKey:    "db",
 				Active:      true,
 			}, {
+				Model: gorm.Model{
+					ID: 3,
+				},
 				Name:        "Operating Systems",
 				Description: "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs.",
 				ShortKey:    "os",
 				Active:      true,
 			}, {
+				Model: gorm.Model{
+					ID: 4,
+				},
 				Name:        "Cloud Providers",
 				Description: "A cloud provider is a company that offers some component of cloud computing -- typically infrastructure as a service, software as a service or platform as a service -- to other businesses or individuals.",
 				ShortKey:    "cp",
@@ -114,22 +126,34 @@ func seedDatabase(dal *database.DataAccessLayer) {
 		},
 		skills: []models.Skill{
 			{
+				Model: gorm.Model{
+					ID: 1,
+				},
 				Name:        "Go",
 				Description: "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
 				ShortKey:    "go",
 				Active:      true,
 				Categories:  []*models.Category{},
 			}, {
+				Model: gorm.Model{
+					ID: 2,
+				},
 				Name:        "JavaScript",
 				Description: "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
 				ShortKey:    "js",
 				Active:      true,
 			}, {
+				Model: gorm.Model{
+					ID: 3,
+				},
 				Name:        "Python",
 				Description: "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
 				ShortKey:    "py",
 				Active:      true,
 			}, {
+				Model: gorm.Model{
+					ID: 4,
+				},
 				Name:        "Java",
 				Description: "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere, meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.",
 				ShortKey:    "java",
@@ -138,16 +162,25 @@ func seedDatabase(dal *database.DataAccessLayer) {
 		},
 		people: []models.Person{
 			{
+				Model: gorm.Model{
+					ID: 1,
+				},
 				Name:    "John",
 				Email:   "john@email.com",
 				Phone:   "555-555-5555",
 				Profile: "John is a software developer with 10 years of experience.",
 			}, {
+				Model: gorm.Model{
+					ID: 2,
+				},
 				Name:    "Jane",
 				Email:   "jane@email.com",
 				Phone:   "555-555-5555",
 				Profile: "Jane is a software developer with 15 years of experience.",
 			}, {
+				Model: gorm.Model{
+					ID: 3,
+				},
 				Name:    "Joe",
 				Email:   "joe@email.com",
 				Phone:   "555-555-5555",

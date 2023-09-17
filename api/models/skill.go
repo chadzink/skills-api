@@ -9,7 +9,7 @@ type Skill struct {
 	ShortKey    string `json:"short_key" gorm:"text;not null;default:null`
 	Active      bool   `json:"active" gorm:"bit;not null;default:1`
 
-	Categories []*Category `gorm:"many2many:skill_category;"`
+	Categories []*Category `json:"categories" gorm:"many2many:skill_category;"`
 
 	// Additional fields that are not stored in the database
 	CategoryIds []uint `json:"category_ids" gorm:"-"`
