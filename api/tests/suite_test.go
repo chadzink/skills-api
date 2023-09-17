@@ -2,12 +2,14 @@ package tests
 
 import (
 	"log"
+	"net/http"
 	"testing"
 
 	"github.com/chadzink/skills-api/database"
 	"github.com/chadzink/skills-api/handlers"
 	"github.com/chadzink/skills-api/models"
 	"github.com/gofiber/fiber/v2"
+	"github.com/sebdah/goldie/v2"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -16,8 +18,9 @@ import (
 // Create a new test suite
 type TestWithDbSuite struct {
 	suite.Suite
-	app *fiber.App
-	db  *gorm.DB
+	app              *fiber.App
+	db               *gorm.DB
+	updateGoldenFile bool
 }
 
 // Make sure that VariableThatShouldStartAtFive is set to five
@@ -80,6 +83,40 @@ func setupTestRoutes(a *fiber.App) {
 	a.Post("/skills", handlers.CreateSkills)
 }
 
+func (suite *TestWithDbSuite) CheckResponseToGoldenFile(name string, filename string, resp *http.Response) {
+	g := goldie.New(suite.T())
+
+	suite.T().Run(name, func(t *testing.T) {
+		// Run your function or code for scenario 1
+		result := GetResponseBodyString(t, resp)
+
+		if suite.updateGoldenFile {
+			// Use g.Assert to compare the result against the golden file
+			g.Update(t, filename, []byte(result))
+		} else {
+			// Use g.Assert to compare the result against the golden file
+			g.Assert(t, filename, []byte(result))
+		}
+	})
+}
+
+func (suite *TestWithDbSuite) CheckResponsesToGoldenFile(name string, filename string, resp *http.Response) {
+	g := goldie.New(suite.T())
+
+	suite.T().Run(name, func(t *testing.T) {
+		// Run your function or code for scenario 1
+		result := GetResponsesBodyString(t, resp)
+
+		if suite.updateGoldenFile {
+			// Use g.Assert to compare the result against the golden file
+			g.Update(t, filename, []byte(result))
+		} else {
+			// Use g.Assert to compare the result against the golden file
+			g.Assert(t, filename, []byte(result))
+		}
+	})
+}
+
 type TestData struct {
 	skills     []models.Skill
 	categories []models.Category
@@ -133,7 +170,7 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Description: "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
 				ShortKey:    "go",
 				Active:      true,
-				Categories:  []*models.Category{},
+				CategoryIds: []uint{1, 2},
 			}, {
 				Model: gorm.Model{
 					ID: 2,
@@ -142,6 +179,7 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Description: "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
 				ShortKey:    "js",
 				Active:      true,
+				CategoryIds: []uint{2, 3},
 			}, {
 				Model: gorm.Model{
 					ID: 3,
@@ -150,6 +188,7 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Description: "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
 				ShortKey:    "py",
 				Active:      true,
+				CategoryIds: []uint{3, 4},
 			}, {
 				Model: gorm.Model{
 					ID: 4,
@@ -158,6 +197,7 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Description: "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere, meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.",
 				ShortKey:    "java",
 				Active:      true,
+				CategoryIds: []uint{2, 4},
 			},
 		},
 		people: []models.Person{
@@ -169,6 +209,14 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "john@email.com",
 				Phone:   "555-555-5555",
 				Profile: "John is a software developer with 10 years of experience.",
+				PersonSkills: []models.PersonSkill{
+					{
+						SkillID: 1,
+					},
+					{
+						SkillID: 2,
+					},
+				},
 			}, {
 				Model: gorm.Model{
 					ID: 2,
@@ -177,6 +225,11 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "jane@email.com",
 				Phone:   "555-555-5555",
 				Profile: "Jane is a software developer with 15 years of experience.",
+				PersonSkills: []models.PersonSkill{
+					{
+						SkillID: 2,
+					},
+				},
 			}, {
 				Model: gorm.Model{
 					ID: 3,
@@ -185,6 +238,14 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "joe@email.com",
 				Phone:   "555-555-5555",
 				Profile: "Joe is an IT manager with 20 years of experience.",
+				PersonSkills: []models.PersonSkill{
+					{
+						SkillID: 3,
+					},
+					{
+						SkillID: 4,
+					},
+				},
 			},
 		},
 	}

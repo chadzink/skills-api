@@ -6,12 +6,11 @@ import (
 	"fmt"
 
 	// "fmt"
-	"io"
+
 	"net/http"
 	"net/http/httptest"
 
 	"github.com/chadzink/skills-api/database"
-	"github.com/chadzink/skills-api/handlers"
 	"github.com/chadzink/skills-api/models"
 	"github.com/stretchr/testify/assert"
 	// add Testify package
@@ -30,23 +29,28 @@ var TEST_DATA_CATEGORIES = []models.Category{
 		Description: "Leadership is the ability to lead others.",
 		ShortKey:    "leadership",
 		Active:      true,
+		SkillIds:    []uint{2, 3},
 	},
 	{
 		Name:        "Operations",
 		Description: "Operations is the process of operating a business.",
 		ShortKey:    "operations",
 		Active:      true,
+		SkillIds:    []uint{3, 4},
 	},
 	{
 		Name:        "Communication",
 		Description: "Communication is the process of communicating with others.",
 		ShortKey:    "communication",
 		Active:      true,
+		SkillIds:    []uint{1, 4},
 	},
 }
 
 // Create a new category
 func (suite *TestWithDbSuite) TestCreateCategory() {
+	// suite.updateGoldenFile = true
+
 	// calculate the total categories in the database before adding a new one
 	totalCategoriesBefore, _ := database.DAL.GetAllCategories()
 
@@ -60,29 +64,20 @@ func (suite *TestWithDbSuite) TestCreateCategory() {
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
 
-	// Get the category from the response
-	respCategory := parseResponseData(suite.T(), resp, models.Category{}).(models.Category)
-
 	// calculate the total categories in the database after adding a new one
 	totalCategoriesAfter, _ := database.DAL.GetAllCategories()
 
 	// Confirm that the total categories increased by 1
 	assert.Equal(suite.T(), len(totalCategoriesBefore)+1, len(totalCategoriesAfter))
 
-	// Confirm that the category in the response matches the category in the database
-	assert.Equal(suite.T(), respCategory.Name, TEST_DATA_CATEGORIES[0].Name)
-
-	// Check if the new category in database is linked to the skills in the id list
-	if category, err := database.DAL.GetCategoryById(respCategory.ID); err != nil {
-		suite.T().Error(err)
-	} else {
-		assert.Equal(suite.T(), category.Skills[0].ID, TEST_DATA_CATEGORIES[0].SkillIds[0])
-		assert.Equal(suite.T(), category.Skills[1].ID, TEST_DATA_CATEGORIES[0].SkillIds[1])
-	}
+	// Comapre the response to the golden file
+	suite.CheckResponseToGoldenFile("Test Create Category", "create_category", resp)
 }
 
 // Test to get a category by Id
 func (suite *TestWithDbSuite) TestReadCategory() {
+	// suite.updateGoldenFile = true
+
 	// Create a category to read
 	categoryAdded := TEST_DATA_CATEGORIES[1]
 	database.DAL.CreateCategory(&categoryAdded)
@@ -95,26 +90,28 @@ func (suite *TestWithDbSuite) TestReadCategory() {
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
 
-	// Get the category from the response
-	respCategory := parseResponseData(suite.T(), resp, models.Category{}).(models.Category)
-
-	// Check if the response returned the correct data Name property
-	assert.Equal(suite.T(), TEST_DATA_CATEGORIES[1].Name, respCategory.Name)
-
 	// Check if the category was found in the database
 	if _, err := database.DAL.GetCategoryById(categoryAdded.ID); err != nil {
 		suite.T().Error(err)
 	}
+
+	// Comapre the response to the golden file
+	suite.CheckResponseToGoldenFile("Test Read Category", "read_category", resp)
 }
 
 // Test to update a category by Id
 func (suite *TestWithDbSuite) TestUpdateCategory() {
+	// suite.updateGoldenFile = true
+
 	// Create a category to update
 	categoryAdded := TEST_DATA_CATEGORIES[2]
 	database.DAL.CreateCategory(&categoryAdded)
 
+	// Change the name of the category
+	categoryAdded.Name = "Updated Category Name"
+
 	// Create a request to the category route
-	reqBodyJson, _ := json.Marshal(TEST_DATA_CATEGORIES[2])
+	reqBodyJson, _ := json.Marshal(categoryAdded)
 
 	req := httptest.NewRequest(http.MethodPost, fmt.Sprintf("/category/%v", categoryAdded.ID), bytes.NewReader(reqBodyJson))
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
@@ -123,11 +120,8 @@ func (suite *TestWithDbSuite) TestUpdateCategory() {
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
 
-	// Get the category from the response
-	respCategory := parseResponseData(suite.T(), resp, models.Category{}).(models.Category)
-
-	// Check if the response returned the correct data Name property
-	assert.Equal(suite.T(), TEST_DATA_CATEGORIES[2].Name, respCategory.Name)
+	// Comapre the response to the golden file
+	suite.CheckResponseToGoldenFile("Test Update Category", "update_category", resp)
 
 	// Check if the category was found in the database
 	if _, err := database.DAL.GetCategoryById(categoryAdded.ID); err != nil {
@@ -137,6 +131,8 @@ func (suite *TestWithDbSuite) TestUpdateCategory() {
 
 // TestDeleteCategory tests the DELETE /category/:id route
 func (suite *TestWithDbSuite) TestDeleteCategory() {
+	// suite.updateGoldenFile = true
+
 	// Create a category to delete
 	categoryAdded := TEST_DATA_CATEGORIES[3]
 	database.DAL.CreateCategory(&categoryAdded)
@@ -148,6 +144,9 @@ func (suite *TestWithDbSuite) TestDeleteCategory() {
 	req := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/category/%v", categoryAdded.ID), nil)
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
+
+	// Comapre the response to the golden file
+	suite.CheckResponseToGoldenFile("Test Delete Category", "delete_category", resp)
 
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
@@ -166,6 +165,8 @@ func (suite *TestWithDbSuite) TestDeleteCategory() {
 
 // TestListCategories tests the GET /categories route
 func (suite *TestWithDbSuite) TestListCategories() {
+	// suite.updateGoldenFile = true
+
 	// calculate the total categories in the database before adding a new one
 	totalCategories, _ := database.DAL.GetAllCategories()
 
@@ -174,8 +175,6 @@ func (suite *TestWithDbSuite) TestListCategories() {
 		for _, categoryAdded := range TEST_DATA_CATEGORIES {
 			database.DAL.CreateCategory(&categoryAdded)
 		}
-
-		totalCategories, _ = database.DAL.GetAllCategories()
 	}
 
 	req := httptest.NewRequest(http.MethodGet, "/categories", nil)
@@ -184,29 +183,14 @@ func (suite *TestWithDbSuite) TestListCategories() {
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
 
-	// Get the category from the response
-	var responseObjects handlers.ResponseResults
-	if resBodyBytes, err := io.ReadAll(resp.Body); err != nil {
-		suite.T().Error(err)
-	} else {
-		// parse the response body
-		if err := json.Unmarshal(resBodyBytes, &responseObjects); err != nil {
-			suite.T().Error(err)
-		}
-
-		for i, responseObject := range responseObjects.Data {
-			// Extract the response data into a category object
-			responseDataAsCategory := MapToCategory(responseObject)
-			responseDataAsCategory.ID = uint(responseObject["ID"].(float64))
-
-			// Check if the response returned the correct data Name property
-			assert.Equal(suite.T(), totalCategories[i].Name, responseDataAsCategory.Name)
-		}
-	}
+	// Comapre the response to the golden file
+	suite.CheckResponsesToGoldenFile("Test Read Categories", "read_categories", resp)
 }
 
 // TestCreateCategories tests the POST /categories route
 func (suite *TestWithDbSuite) TestCreateCategories() {
+	// suite.updateGoldenFile = true
+
 	// calculate the total categories in the database before adding a new one
 	totalCategorysBefore, _ := database.DAL.GetAllCategories()
 
@@ -220,25 +204,8 @@ func (suite *TestWithDbSuite) TestCreateCategories() {
 	// Confirm that the response status code is 200
 	assert.Equal(suite.T(), 200, resp.StatusCode)
 
-	// Get the categories from the response
-	var responseObjects handlers.ResponseResults
-	if resBodyBytes, err := io.ReadAll(resp.Body); err != nil {
-		suite.T().Error(err)
-	} else {
-		// parse the response body
-		if err := json.Unmarshal(resBodyBytes, &responseObjects); err != nil {
-			suite.T().Error(err)
-		}
-
-		for i, responseObject := range responseObjects.Data {
-			// Extract the response data into a category object
-			responseDataAsCategory := MapToCategory(responseObject)
-			responseDataAsCategory.ID = uint(responseObject["ID"].(float64))
-
-			// Check if the response returned the correct data Name property
-			assert.Equal(suite.T(), TEST_DATA_SKILLS[i].Name, responseDataAsCategory.Name)
-		}
-	}
+	// Comapre the response to the golden file
+	suite.CheckResponsesToGoldenFile("Test Create Categories", "create_categories", resp)
 
 	// Check if the number of categories in the database increased by the total number of categories added
 	if categories, err := database.DAL.GetAllCategories(); err != nil {

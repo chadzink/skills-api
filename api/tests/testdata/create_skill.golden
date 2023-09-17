@@ -1,0 +1,35 @@
+{
+	"data": {
+		"ID": 5,
+		"active": true,
+		"categories": [
+			{
+				"ID": 1,
+				"active": true,
+				"description": "A programming language is a formal language comprising a set of instructions that produce various kinds of output. Programming languages are used in computer programming to implement algorithms.",
+				"name": "Programming Language",
+				"short_key": "prog_lang",
+				"skill_ids": null,
+				"skills": null
+			},
+			{
+				"ID": 2,
+				"active": true,
+				"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
+				"name": "Databases",
+				"short_key": "db",
+				"skill_ids": null,
+				"skills": null
+			}
+		],
+		"category_ids": [
+			1,
+			2
+		],
+		"description": "Boat building is the design and construction of boats and their systems. This includes at a minimum a hull, with propulsion, mechanical, navigation, safety and other systems as a craft requires.",
+		"name": "Boat Building",
+		"short_key": "boat-building"
+	},
+	"success": true,
+	"message": ""
+}

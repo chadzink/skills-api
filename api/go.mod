@@ -4,6 +4,7 @@ go 1.21.0
 
 require (
 	github.com/gofiber/fiber/v2 v2.49.0
+	github.com/sebdah/goldie/v2 v2.5.3
 	github.com/stretchr/testify v1.8.1
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/driver/sqlite v1.5.3
@@ -28,6 +29,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
+	github.com/sergi/go-diff v1.0.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.48.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

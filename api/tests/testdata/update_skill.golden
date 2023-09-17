@@ -1,0 +1,45 @@
+{
+	"data": {
+		"ID": 5,
+		"active": true,
+		"categories": [
+			{
+				"ID": 1,
+				"active": true,
+				"description": "A programming language is a formal language comprising a set of instructions that produce various kinds of output. Programming languages are used in computer programming to implement algorithms.",
+				"name": "Programming Language",
+				"short_key": "prog_lang",
+				"skill_ids": null,
+				"skills": null
+			},
+			{
+				"ID": 2,
+				"active": true,
+				"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
+				"name": "Databases",
+				"short_key": "db",
+				"skill_ids": null,
+				"skills": null
+			},
+			{
+				"ID": 3,
+				"active": true,
+				"description": "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs.",
+				"name": "Operating Systems",
+				"short_key": "os",
+				"skill_ids": null,
+				"skills": null
+			}
+		],
+		"category_ids": [
+			1,
+			2,
+			3
+		],
+		"description": "Updated description",
+		"name": "Updated Name",
+		"short_key": "roadmap-planning"
+	},
+	"success": true,
+	"message": ""
+}
