@@ -81,6 +81,9 @@ func setupTestRoutes(a *fiber.App) {
 	a.Delete("/skill/:id", handlers.DeleteSkill)
 	a.Get("/skills", handlers.ListSkills)
 	a.Post("/skills", handlers.CreateSkills)
+
+	// READ for expertise entity
+	a.Get("/expertises", handlers.ListExpertises)
 }
 
 func (suite *TestWithDbSuite) CheckResponseToGoldenFile(name string, filename string, resp *http.Response) {
@@ -209,12 +212,14 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "john@email.com",
 				Phone:   "555-555-5555",
 				Profile: "John is a software developer with 10 years of experience.",
-				PersonSkills: []models.PersonSkill{
+				PersonSkills: []*models.PersonSkill{
 					{
-						SkillID: 1,
+						SkillID:     1,
+						ExpertiseID: 1,
 					},
 					{
-						SkillID: 2,
+						SkillID:     2,
+						ExpertiseID: 2,
 					},
 				},
 			}, {
@@ -225,9 +230,10 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "jane@email.com",
 				Phone:   "555-555-5555",
 				Profile: "Jane is a software developer with 15 years of experience.",
-				PersonSkills: []models.PersonSkill{
+				PersonSkills: []*models.PersonSkill{
 					{
-						SkillID: 2,
+						SkillID:     2,
+						ExpertiseID: 3,
 					},
 				},
 			}, {
@@ -238,12 +244,14 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				Email:   "joe@email.com",
 				Phone:   "555-555-5555",
 				Profile: "Joe is an IT manager with 20 years of experience.",
-				PersonSkills: []models.PersonSkill{
+				PersonSkills: []*models.PersonSkill{
 					{
-						SkillID: 3,
+						SkillID:     3,
+						ExpertiseID: 4,
 					},
 					{
-						SkillID: 4,
+						SkillID:     4,
+						ExpertiseID: 2,
 					},
 				},
 			},

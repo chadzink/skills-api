@@ -33,4 +33,7 @@ func setupRoutes(app *fiber.App) {
 	app.Delete("/person/:id", handlers.DeletePerson)
 	// batch features
 	app.Get("/people", handlers.ListPeople)
+
+	// READ for expertise entity
+	app.Get("/expertises", handlers.ListExpertises)
 }

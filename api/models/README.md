@@ -81,7 +81,8 @@ erDiagram
         created_at timestamp
         updated_at timestamp
         deleted_at timestamp
-        label text
+        name text
+        description text
         order int
     }
 

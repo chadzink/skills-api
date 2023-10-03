@@ -1,0 +1,36 @@
+{
+	"success": true,
+	"message": "",
+	"data": [
+		{
+			"ID": 1,
+			"description": "A beginner is a person who is starting to learn or do something.",
+			"name": "Beginner",
+			"order": 1
+		},
+		{
+			"ID": 2,
+			"description": "An intermediate is a person who has a level of knowledge or skill between a beginner and an expert.",
+			"name": "Intermediate",
+			"order": 2
+		},
+		{
+			"ID": 3,
+			"description": "An advanced is a person who is very skilled or highly trained in a particular field.",
+			"name": "Advanced",
+			"order": 3
+		},
+		{
+			"ID": 4,
+			"description": "An expert is a person who is very knowledgeable about or skilful in a particular area.",
+			"name": "Expert",
+			"order": 4
+		},
+		{
+			"ID": 5,
+			"description": "N/A is used when the level of expertise is not applicable.",
+			"name": "N/A",
+			"order": 5
+		}
+	]
+}

@@ -4,28 +4,42 @@ import (
 	"github.com/chadzink/skills-api/models"
 )
 
-// Function to add associated skills to person
-func (dal *DataAccessLayer) AddPersonSkillsForPerson(person *models.Person) error {
-
-	// Check if the skill id list association has was passed in
+// Function to add associated skills to category
+func (dal *DataAccessLayer) UpdatePersonSkillsForPerson(person *models.Person) error {
 	if len(person.PersonSkills) > 0 {
+
+		// Set the person id for each person skill
+		for i, _ := range person.PersonSkills {
+			person.PersonSkills[i].PersonID = person.ID
+		}
+
+		// Make a copy of the person skills to add so I can clear existing and add in the associated skills
+		updatedPersonSkills := person.PersonSkills
+
 		// remove existing associated skills
-		if err := dal.Db.Model(&person).Association("Skills").Clear(); err != nil {
+		if err := dal.Db.Model(&person).Association("PersonSkills").Clear(); err != nil {
 			return err
 		}
 
-		// Add associated skills
-		for i, personSkill := range person.PersonSkills {
-			var skill models.Skill
-			dal.Db.First(&skill, personSkill.SkillID)
-			// Check if the skill was found by id
-			if skill.ID > 0 {
-				person.Skills = append(person.Skills, &skill)
-				person.PersonSkills[i].PersonID = person.ID
-			}
-		}
+		dal.Db.Save(&person).Association("PersonSkills").Replace(updatedPersonSkills)
 
-		dal.Db.Save(&person).Association("Skills").Replace(person.Skills)
+		// Load the relationships for each PersonSkill
+		dal.LoadPersonSkillsForPerson(person)
+	}
+
+	return nil
+}
+
+// Load the Skills and Expertise for a Person
+func (dal *DataAccessLayer) LoadPersonSkillsForPerson(person *models.Person) error {
+	if len(person.PersonSkills) > 0 {
+		for i, _ := range person.PersonSkills {
+			// Load Skill
+			dal.Db.Model(&person.PersonSkills[i]).Preload("Skill").First(&person.PersonSkills[i])
+
+			// Load Expertise
+			dal.Db.Model(&person.PersonSkills[i]).Preload("Expertise").First(&person.PersonSkills[i])
+		}
 	}
 
 	return nil
@@ -38,8 +52,8 @@ func (dal *DataAccessLayer) CreatePerson(person *models.Person) error {
 		return err
 	}
 
-	// Add associated skills
-	if err = dal.AddPersonSkillsForPerson(person); err != nil {
+	// Add associated person skills
+	if err = dal.UpdatePersonSkillsForPerson(person); err != nil {
 		return err
 	}
 
@@ -49,17 +63,10 @@ func (dal *DataAccessLayer) CreatePerson(person *models.Person) error {
 // Get all people and pre-load the skills
 func (dal *DataAccessLayer) GetAllPeople() ([]models.Person, error) {
 	var people []models.Person
-	err := dal.Db.Model(&models.Person{}).Preload("Skills").Find(&people).Error
+	err := dal.Db.Model(&models.Person{}).Preload("PersonSkills").Find(&people).Error
 
-	// Build person skills lists
-	for index, person := range people {
-		for _, skill := range person.Skills {
-			people[index].PersonSkills = append(people[index].PersonSkills, models.PersonSkill{
-				PersonID:    person.ID,
-				SkillID:     skill.ID,
-				ExpertiseID: 0,
-			})
-		}
+	for i, _ := range people {
+		dal.LoadPersonSkillsForPerson(&people[i])
 	}
 
 	return people, err
@@ -69,16 +76,8 @@ func (dal *DataAccessLayer) GetAllPeople() ([]models.Person, error) {
 func (dal *DataAccessLayer) GetPersonById(id uint) (models.Person, error) {
 	var person models.Person
 
-	err := dal.Db.Model(&models.Person{}).Preload("Skills").First(&person, id).Error
-
-	// Build person skills list
-	for _, skill := range person.Skills {
-		person.PersonSkills = append(person.PersonSkills, models.PersonSkill{
-			PersonID:    person.ID,
-			SkillID:     skill.ID,
-			ExpertiseID: 0,
-		})
-	}
+	err := dal.Db.Model(&models.Person{}).Preload("PersonSkills").First(&person, id).Error
+	dal.LoadPersonSkillsForPerson(&person)
 
 	return person, err
 }
@@ -86,7 +85,7 @@ func (dal *DataAccessLayer) GetPersonById(id uint) (models.Person, error) {
 // Update a person by id and rebuild the association with skills
 func (dal *DataAccessLayer) UpdatePersonById(id uint, person *models.Person) error {
 	var existingPerson models.Person
-	err := dal.Db.Model(&models.Person{}).Preload("Skills").First(&existingPerson, id).Error
+	err := dal.Db.Model(&models.Person{}).Preload("PersonSkills").First(&existingPerson, id).Error
 	if err != nil {
 		return err
 	}
@@ -97,7 +96,7 @@ func (dal *DataAccessLayer) UpdatePersonById(id uint, person *models.Person) err
 	person.ID = id
 
 	// Add associated skills
-	if err = dal.AddPersonSkillsForPerson(person); err != nil {
+	if err = dal.UpdatePersonSkillsForPerson(person); err != nil {
 		return err
 	}
 
@@ -112,7 +111,7 @@ func (dal *DataAccessLayer) DeletePersonById(id uint) error {
 		return err
 	}
 
-	if err = dal.Db.Model(&person).Association("Skills").Clear(); err != nil {
+	if err = dal.Db.Model(&person).Association("PersonSkills").Clear(); err != nil {
 		return err
 	}
 

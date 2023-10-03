@@ -21,23 +21,7 @@ func GetResponseBodyString(t *testing.T, resp *http.Response) string {
 		}
 
 		// remove the created_at & updated_at fields from the response
-		delete(responseObject.Data, "CreatedAt")
-		delete(responseObject.Data, "UpdatedAt")
-		delete(responseObject.Data, "DeletedAt")
-
-		checkForSubKeys := []string{"skills", "categories", "person_skills"}
-		for _, key := range checkForSubKeys {
-			if _, ok := responseObject.Data[key]; ok {
-				// Check fo rnil values
-				if responseObject.Data[key] != nil {
-					for i, _ := range responseObject.Data[key].([]interface{}) {
-						delete(responseObject.Data[key].([]interface{})[i].(map[string]interface{}), "CreatedAt")
-						delete(responseObject.Data[key].([]interface{})[i].(map[string]interface{}), "UpdatedAt")
-						delete(responseObject.Data[key].([]interface{})[i].(map[string]interface{}), "DeletedAt")
-					}
-				}
-			}
-		}
+		responseObject.Data = RemoveDatesFromResponseData(responseObject.Data)
 
 		jsonString, err2 := json.MarshalIndent(responseObject, "", "	")
 		if err2 != nil {
@@ -61,23 +45,7 @@ func GetResponsesBodyString(t *testing.T, resp *http.Response) string {
 
 		for d, _ := range responseObjects.Data {
 			// remove the created_at & updated_at fields from the response
-			delete(responseObjects.Data[d], "CreatedAt")
-			delete(responseObjects.Data[d], "UpdatedAt")
-			delete(responseObjects.Data[d], "DeletedAt")
-
-			checkForSubKeys := []string{"skills", "categories", "person_skills"}
-			for _, key := range checkForSubKeys {
-				if _, ok := responseObjects.Data[d][key]; ok {
-					// Check fo rnil values
-					if responseObjects.Data[d][key] != nil {
-						for i, _ := range responseObjects.Data[d][key].([]interface{}) {
-							delete(responseObjects.Data[d][key].([]interface{})[i].(map[string]interface{}), "CreatedAt")
-							delete(responseObjects.Data[d][key].([]interface{})[i].(map[string]interface{}), "UpdatedAt")
-							delete(responseObjects.Data[d][key].([]interface{})[i].(map[string]interface{}), "DeletedAt")
-						}
-					}
-				}
-			}
+			responseObjects.Data[d] = RemoveDatesFromResponseData(responseObjects.Data[d])
 		}
 
 		jsonString, err2 := json.MarshalIndent(responseObjects, "", "	")
@@ -87,4 +55,39 @@ func GetResponsesBodyString(t *testing.T, resp *http.Response) string {
 		return string(jsonString)
 	}
 	return ""
+}
+
+func RemoveDatesFromResponseData(data map[string]interface{}) map[string]interface{} {
+	// remove the created_at & updated_at fields from the response
+	delete(data, "CreatedAt")
+	delete(data, "UpdatedAt")
+	delete(data, "DeletedAt")
+
+	checkForSubKeys := []string{"skills", "categories", "person_skills"}
+	for _, key := range checkForSubKeys {
+		if _, ok := data[key]; ok {
+			// Check for nil values
+			if data[key] != nil {
+				for i, _ := range data[key].([]interface{}) {
+					delete(data[key].([]interface{})[i].(map[string]interface{}), "CreatedAt")
+					delete(data[key].([]interface{})[i].(map[string]interface{}), "UpdatedAt")
+					delete(data[key].([]interface{})[i].(map[string]interface{}), "DeletedAt")
+
+					checkForSubSubKeys := []string{"skill", "expertise", "person", "category"}
+					for _, subKey := range checkForSubSubKeys {
+						if _, ok := data[key].([]interface{})[i].(map[string]interface{})[subKey]; ok {
+							// Check for nil values
+							if data[key].([]interface{})[i].(map[string]interface{})[subKey] != nil {
+								delete(data[key].([]interface{})[i].(map[string]interface{})[subKey].(map[string]interface{}), "CreatedAt")
+								delete(data[key].([]interface{})[i].(map[string]interface{})[subKey].(map[string]interface{}), "UpdatedAt")
+								delete(data[key].([]interface{})[i].(map[string]interface{})[subKey].(map[string]interface{}), "DeletedAt")
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return data
 }
