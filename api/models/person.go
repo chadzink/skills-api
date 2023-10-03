@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -13,17 +11,7 @@ type Person struct {
 	Phone   string `json:"phone" gorm:"text;null;default:null`
 	Profile string `json:"profile" gorm:"text;null;default:null`
 
-	Skills []*Skill `json:"skills" gorm:"many2many:person_skills;"`
-
-	// Additional fields that are not stored in the database
-	PersonSkills []PersonSkill `json:"person_skills" gorm:"-"`
-}
-
-type PersonSkill struct {
-	PersonID    uint      `json:"person_id" gorm:"primaryKey"`
-	SkillID     uint      `json:"skill_id" gorm:"primaryKey"`
-	ExpertiseID uint      `json:"expertise_id" gorm:"primaryKey"`
-	LastUsed    time.Time `json:"last_used" gorm:"primaryKey"`
+	PersonSkills []*PersonSkill `json:"person_skills" gorm:"foreignKey:PersonID"`
 }
 
 // Example of categories in JSON

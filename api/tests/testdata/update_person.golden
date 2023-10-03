@@ -5,40 +5,71 @@
 		"name": "Richard",
 		"person_skills": [
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 1,
+					"description": "A beginner is a person who is starting to learn or do something.",
+					"name": "Beginner",
+					"order": 1
+				},
+				"expertise_id": 1,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 3,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
+					"name": "Python",
+					"short_key": "py"
+				},
 				"skill_id": 3
 			},
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 5,
+					"description": "N/A is used when the level of expertise is not applicable.",
+					"name": "N/A",
+					"order": 5
+				},
+				"expertise_id": 5,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 4,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere, meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.",
+					"name": "Java",
+					"short_key": "java"
+				},
 				"skill_id": 4
+			},
+			{
+				"expertise": {
+					"ID": 1,
+					"description": "A beginner is a person who is starting to learn or do something.",
+					"name": "Beginner",
+					"order": 1
+				},
+				"expertise_id": 1,
+				"last_used": "0001-01-01T00:00:00Z",
+				"person_id": 4,
+				"skill": {
+					"ID": 1,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+					"name": "Go",
+					"short_key": "go"
+				},
+				"skill_id": 1
 			}
 		],
 		"phone": "555-555-5544",
-		"profile": "Drew is a civil engineer with 15 years of experience.",
-		"skills": [
-			{
-				"ID": 3,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
-				"name": "Python",
-				"short_key": "py"
-			},
-			{
-				"ID": 4,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. It is a general-purpose programming language intended to let application developers write once, run anywhere, meaning that compiled Java code can run on all platforms that support Java without the need for recompilation.",
-				"name": "Java",
-				"short_key": "java"
-			}
-		]
+		"profile": "Drew is a civil engineer with 15 years of experience."
 	},
 	"success": true,
 	"message": ""

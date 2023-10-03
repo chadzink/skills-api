@@ -5,40 +5,50 @@
 		"name": "Dan",
 		"person_skills": [
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 3,
+					"description": "An advanced is a person who is very skilled or highly trained in a particular field.",
+					"name": "Advanced",
+					"order": 3
+				},
+				"expertise_id": 3,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 2,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
+					"name": "JavaScript",
+					"short_key": "js"
+				},
 				"skill_id": 2
 			},
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 2,
+					"description": "An intermediate is a person who has a level of knowledge or skill between a beginner and an expert.",
+					"name": "Intermediate",
+					"order": 2
+				},
+				"expertise_id": 2,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 3,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
+					"name": "Python",
+					"short_key": "py"
+				},
 				"skill_id": 3
 			}
 		],
 		"phone": "555-555-5533",
-		"profile": "Dan is a construction finisher with 10 years of experience.",
-		"skills": [
-			{
-				"ID": 2,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
-				"name": "JavaScript",
-				"short_key": "js"
-			},
-			{
-				"ID": 3,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "Python is an interpreted, high-level and general-purpose programming language. Python's design philosophy emphasizes code readability with its notable use of significant indentation.",
-				"name": "Python",
-				"short_key": "py"
-			}
-		]
+		"profile": "Dan is a construction finisher with 10 years of experience."
 	},
 	"success": true,
 	"message": ""

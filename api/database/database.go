@@ -53,4 +53,7 @@ func MigrateDb(db *gorm.DB) {
 	db.AutoMigrate(&models.Category{})
 	db.AutoMigrate(&models.Person{})
 	db.AutoMigrate(&models.PersonSkill{})
+	db.AutoMigrate(&models.Expertise{})
+	// Add default expertise levels
+	DAL.CreateDefaultExpertise()
 }

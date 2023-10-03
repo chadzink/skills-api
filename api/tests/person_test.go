@@ -22,12 +22,14 @@ var TEST_DATA_PERSON = []models.Person{
 		Email:   "dave@email.com",
 		Phone:   "555-555-5522",
 		Profile: "Dave is a software developer with 5 years of experience.",
-		PersonSkills: []models.PersonSkill{
+		PersonSkills: []*models.PersonSkill{
 			{
-				SkillID: 1,
+				SkillID:     1,
+				ExpertiseID: 5,
 			},
 			{
-				SkillID: 2,
+				SkillID:     2,
+				ExpertiseID: 4,
 			},
 		},
 	}, {
@@ -35,12 +37,14 @@ var TEST_DATA_PERSON = []models.Person{
 		Email:   "dan@email.com",
 		Phone:   "555-555-5533",
 		Profile: "Dan is a construction finisher with 10 years of experience.",
-		PersonSkills: []models.PersonSkill{
+		PersonSkills: []*models.PersonSkill{
 			{
-				SkillID: 2,
+				SkillID:     2,
+				ExpertiseID: 3,
 			},
 			{
-				SkillID: 3,
+				SkillID:     3,
+				ExpertiseID: 2,
 			},
 		},
 	}, {
@@ -48,12 +52,14 @@ var TEST_DATA_PERSON = []models.Person{
 		Email:   "drew@email.com",
 		Phone:   "555-555-5544",
 		Profile: "Drew is a civil engineer with 15 years of experience.",
-		PersonSkills: []models.PersonSkill{
+		PersonSkills: []*models.PersonSkill{
 			{
-				SkillID: 3,
+				SkillID:     3,
+				ExpertiseID: 1,
 			},
 			{
-				SkillID: 4,
+				SkillID:     4,
+				ExpertiseID: 5,
 			},
 		},
 	}, {
@@ -61,18 +67,22 @@ var TEST_DATA_PERSON = []models.Person{
 		Email:   "dylan@email.com",
 		Phone:   "555-555-1155",
 		Profile: "Dylan is a sailor with 20 years of experience.",
-		PersonSkills: []models.PersonSkill{
+		PersonSkills: []*models.PersonSkill{
 			{
-				SkillID: 1,
+				SkillID:     1,
+				ExpertiseID: 1,
 			},
 			{
-				SkillID: 2,
+				SkillID:     2,
+				ExpertiseID: 2,
 			},
 			{
-				SkillID: 3,
+				SkillID:     3,
+				ExpertiseID: 3,
 			},
 			{
-				SkillID: 4,
+				SkillID:     4,
+				ExpertiseID: 4,
 			},
 		},
 	},
@@ -138,9 +148,13 @@ func (suite *TestWithDbSuite) TestUpdatePerson() {
 	personAdded := TEST_DATA_PERSON[2]
 	database.DAL.CreatePerson(&personAdded)
 
-	// CHange the person's name & email
+	// Change the person's name, email, and add a new skill
 	personAdded.Name = "Richard"
 	personAdded.Email = "richard@email.com"
+	personAdded.PersonSkills = append(personAdded.PersonSkills, &models.PersonSkill{
+		SkillID:     1,
+		ExpertiseID: 1,
+	})
 
 	// Create a request to the person route
 	reqBodyJson, _ := json.Marshal(personAdded)
@@ -163,7 +177,7 @@ func (suite *TestWithDbSuite) TestUpdatePerson() {
 
 // TestDeletePerson tests the DELETE /person/:id route
 func (suite *TestWithDbSuite) TestDeletePerson() {
-	suite.updateGoldenFile = true
+	// suite.updateGoldenFile = true
 
 	// Create a person to delete
 	personAdded := TEST_DATA_PERSON[3]

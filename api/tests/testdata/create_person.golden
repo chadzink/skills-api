@@ -5,40 +5,50 @@
 		"name": "Dave",
 		"person_skills": [
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 5,
+					"description": "N/A is used when the level of expertise is not applicable.",
+					"name": "N/A",
+					"order": 5
+				},
+				"expertise_id": 5,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 1,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
+					"name": "Go",
+					"short_key": "go"
+				},
 				"skill_id": 1
 			},
 			{
-				"expertise_id": 0,
+				"expertise": {
+					"ID": 4,
+					"description": "An expert is a person who is very knowledgeable about or skilful in a particular area.",
+					"name": "Expert",
+					"order": 4
+				},
+				"expertise_id": 4,
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
+				"skill": {
+					"ID": 2,
+					"active": true,
+					"categories": null,
+					"category_ids": null,
+					"description": "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
+					"name": "JavaScript",
+					"short_key": "js"
+				},
 				"skill_id": 2
 			}
 		],
 		"phone": "555-555-5522",
-		"profile": "Dave is a software developer with 5 years of experience.",
-		"skills": [
-			{
-				"ID": 1,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "Go is a compiled, statically typed programming language designed at Google by Robert Griesemer, Rob Pike, and Ken Thompson. Go is syntactically similar to C, but with memory safety, garbage collection, structural typing, and CSP-style concurrency.",
-				"name": "Go",
-				"short_key": "go"
-			},
-			{
-				"ID": 2,
-				"active": true,
-				"categories": null,
-				"category_ids": null,
-				"description": "JavaScript, often abbreviated as JS, is a programming language that conforms to the ECMAScript specification. JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.",
-				"name": "JavaScript",
-				"short_key": "js"
-			}
-		]
+		"profile": "Dave is a software developer with 5 years of experience."
 	},
 	"success": true,
 	"message": ""
