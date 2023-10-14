@@ -15,7 +15,7 @@ The idea of this API is that you can use this as a data resource to store team i
 System setup will need to have Golang version 1.21 installed. You will also need docker for the PostgreSQL setup. This coul dbe skipped by installing Postgress locally and running the project locally with an environmental variables to connect to you rlocal database server.
 
 ##### Requires
-1. Go Langiage [install 1.21 ](https://go.dev/doc/install)
+1. Go Language [v 1.21 ](https://go.dev/doc/install)
 2. Docker [install](https://docs.docker.com/engine/install/)
 3. Local (no docker)
    * [PostgreSQL Server](https://www.postgresql.org/download/)
