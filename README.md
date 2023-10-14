@@ -12,7 +12,16 @@ This is an API that is written in Go Language. It uses the Go package `Fiber` as
 The idea of this API is that you can use this as a data resource to store team information of skills that a team has and can be linked to projects.
 
 ## Running the Project
-To start this project, you should be able to download the source, then copy the `.env.template` file to a new `.env` file (use `cp .env.template .env`). Then change the values in the `.env` file to match what your preferences. This should be at least the database information.
+System setup will need to have Golang version 1.21 installed. You will also need docker for the PostgreSQL setup. This coul dbe skipped by installing Postgress locally and running the project locally with an environmental variables to connect to you rlocal database server.
+
+##### Requires
+1. Go Langiage [install 1.21 ](https://go.dev/doc/install)
+2. Docker [install](https://docs.docker.com/engine/install/)
+3. Local (no docker)
+   * [PostgreSQL Server](https://www.postgresql.org/download/)
+   * Sqlite (for testing)
+
+To start this project, you should be able to download the source, then copy the `.env.template` file to a new `.env` file (use `cp .env.template .env`). Then change the values in the `.env` file to match your system preferences. This should be at least the database information.
 
 Once the `.env` file is setup, you should be able to use the make command to start the Docker container.
 ```
