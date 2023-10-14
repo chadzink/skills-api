@@ -74,7 +74,20 @@ erDiagram
         active boolean
     }
 
+    project_needs_expertise_in_skills {
+        id bigint pk
+        created_at timestamp
+        updated_at timestamp
+        deleted_at timestamp
+        project_id  bigint fk
+        expertise_id bigint fk
+        skill_id bigint fk
+    }
+
     teams ||--o{ projects : "team_id"
+    projects ||--o{ project_needs_expertise_in_skills : "has many"
+    project_needs_expertise_in_skills }o--|| expertises : "needs a"
+    project_needs_expertise_in_skills }o--|| skills : "for a"
 
     expertises {
         id bigint pk
@@ -113,9 +126,9 @@ erDiagram
         last_used datetime
     }
 
-    people ||--o{ person_skill : "person_id"
-    skills ||--o{ person_skill : "skill_id"
-    expertises ||--o{ person_skill : "expertise_id"
+    people ||--o{ person_skills : "person_id"
+    skills ||--o{ person_skills : "skill_id"
+    expertises ||--o{ person_skills : "expertise_id"
 
     person_project {
         person_id bigint fk
