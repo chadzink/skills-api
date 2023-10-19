@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 
 	"github.com/chadzink/skills-api/database"
 	"github.com/chadzink/skills-api/models"
@@ -56,8 +55,7 @@ func (suite *TestWithDbSuite) TestCreateSkill() {
 	//convert skill to add into javascript object for ody of request
 	reqBodyJson, _ := json.Marshal(skillToAdd)
 
-	req := httptest.NewRequest(http.MethodPost, "/skill", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodPost, "/skill", bytes.NewReader(reqBodyJson))
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -83,7 +81,7 @@ func (suite *TestWithDbSuite) TestReadSkill() {
 
 	database.DAL.CreateSkill(&skillAdded)
 
-	req := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/skill/%v", skillAdded.ID), nil)
+	req := suite.GetJwtRequest(http.MethodGet, fmt.Sprintf("/skill/%v", skillAdded.ID), nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -114,8 +112,7 @@ func (suite *TestWithDbSuite) TestUpdateSkill() {
 	skillAdded.Description = "Updated description"
 
 	reqBodyJson, _ := json.Marshal(skillAdded)
-	req := httptest.NewRequest(http.MethodPost, fmt.Sprintf("/skill/%v", skillAdded.ID), bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodPost, fmt.Sprintf("/skill/%v", skillAdded.ID), bytes.NewReader(reqBodyJson))
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -134,7 +131,7 @@ func (suite *TestWithDbSuite) TestDeleteSkill() {
 
 	database.DAL.CreateSkill(&skillAdded)
 
-	req := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/skill/%v", skillAdded.ID), nil)
+	req := suite.GetJwtRequest(http.MethodDelete, fmt.Sprintf("/skill/%v", skillAdded.ID), nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -165,7 +162,7 @@ func (suite *TestWithDbSuite) TestListSkills() {
 		}
 	}
 
-	req := httptest.NewRequest(http.MethodGet, "/skills", nil)
+	req := suite.GetJwtRequest(http.MethodGet, "/skills", nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -185,8 +182,7 @@ func (suite *TestWithDbSuite) TestCreateSkills() {
 	// Create a request to the skill route
 	reqBodyJson, _ := json.Marshal(TEST_DATA_SKILLS)
 
-	req := httptest.NewRequest(http.MethodPost, "/skills", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodPost, "/skills", bytes.NewReader(reqBodyJson))
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200

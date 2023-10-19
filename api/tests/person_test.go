@@ -8,7 +8,6 @@ import (
 	// "fmt"
 
 	"net/http"
-	"net/http/httptest"
 
 	"github.com/chadzink/skills-api/database"
 	"github.com/chadzink/skills-api/models"
@@ -98,7 +97,7 @@ func (suite *TestWithDbSuite) TestCreatePerson() {
 	// Create a request to the person route
 	reqBodyJson, _ := json.Marshal(TEST_DATA_PERSON[0])
 
-	req := httptest.NewRequest(http.MethodPost, "/person", bytes.NewReader(reqBodyJson))
+	req := suite.GetJwtRequest(http.MethodPost, "/person", bytes.NewReader(reqBodyJson))
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
@@ -124,8 +123,7 @@ func (suite *TestWithDbSuite) TestReadPerson() {
 	database.DAL.CreatePerson(&personAdded)
 
 	// Create a request to the person route
-	req := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/person/%v", personAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodGet, fmt.Sprintf("/person/%v", personAdded.ID), nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -159,8 +157,7 @@ func (suite *TestWithDbSuite) TestUpdatePerson() {
 	// Create a request to the person route
 	reqBodyJson, _ := json.Marshal(personAdded)
 
-	req := httptest.NewRequest(http.MethodPost, fmt.Sprintf("/person/%v", personAdded.ID), bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodPost, fmt.Sprintf("/person/%v", personAdded.ID), bytes.NewReader(reqBodyJson))
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -187,8 +184,7 @@ func (suite *TestWithDbSuite) TestDeletePerson() {
 	totalPeopleBefore, _ := database.DAL.GetAllPeople()
 
 	// Create a request to the person route
-	req := httptest.NewRequest(http.MethodDelete, fmt.Sprintf("/person/%v", personAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req := suite.GetJwtRequest(http.MethodDelete, fmt.Sprintf("/person/%v", personAdded.ID), nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200

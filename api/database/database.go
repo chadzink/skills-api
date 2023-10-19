@@ -49,11 +49,70 @@ func ConnectDb() error {
 
 func MigrateDb(db *gorm.DB) {
 	log.Println("running migrations")
+	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Skill{})
 	db.AutoMigrate(&models.Category{})
 	db.AutoMigrate(&models.Person{})
 	db.AutoMigrate(&models.PersonSkill{})
 	db.AutoMigrate(&models.Expertise{})
 	// Add default expertise levels
-	DAL.CreateDefaultExpertise()
+	CreateDefaultExpertise(db)
+}
+
+func CreateDefaultExpertise(db *gorm.DB) {
+	defaultExpertises := []models.Expertise{
+		{
+			Model:       gorm.Model{ID: 1},
+			Name:        "Beginner",
+			Description: "A beginner is a person who is starting to learn or do something.",
+			Order:       1,
+		},
+		{
+			Model:       gorm.Model{ID: 2},
+			Name:        "Intermediate",
+			Description: "An intermediate is a person who has a level of knowledge or skill between a beginner and an expert.",
+			Order:       2,
+		},
+		{
+			Model:       gorm.Model{ID: 3},
+			Name:        "Advanced",
+			Description: "An advanced is a person who is very skilled or highly trained in a particular field.",
+			Order:       3,
+		},
+		{
+			Model:       gorm.Model{ID: 4},
+			Name:        "Expert",
+			Description: "An expert is a person who is very knowledgeable about or skilful in a particular area.",
+			Order:       4,
+		},
+		{
+			Model:       gorm.Model{ID: 5},
+			Name:        "N/A",
+			Description: "N/A is used when the level of expertise is not applicable.",
+			Order:       5,
+		},
+	}
+
+	// Add default expertise levels
+	for _, expertise := range defaultExpertises {
+
+		// Check if the expertise already exists
+		var existingExpertise models.Expertise
+		err := db.Where("name = ?", expertise.Name).First(&existingExpertise).Error
+		if err != nil {
+			// Log the error
+			log.Println(err)
+		}
+
+		if existingExpertise.ID > 0 {
+			continue
+		} else {
+			err = db.Create(&expertise).Error
+
+			if err != nil {
+				// Log the error
+				log.Println(err)
+			}
+		}
+	}
 }
