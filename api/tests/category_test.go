@@ -57,7 +57,6 @@ func (suite *TestWithDbSuite) TestCreateCategory() {
 	reqBodyJson, _ := json.Marshal(TEST_DATA_CATEGORIES[0])
 
 	req := suite.GetJwtRequest(http.MethodPost, "/category", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -83,7 +82,6 @@ func (suite *TestWithDbSuite) TestReadCategory() {
 
 	// Create a request to the category route
 	req := suite.GetJwtRequest(http.MethodGet, fmt.Sprintf("/category/%v", categoryAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -113,7 +111,6 @@ func (suite *TestWithDbSuite) TestUpdateCategory() {
 	reqBodyJson, _ := json.Marshal(categoryAdded)
 
 	req := suite.GetJwtRequest(http.MethodPost, fmt.Sprintf("/category/%v", categoryAdded.ID), bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -141,7 +138,6 @@ func (suite *TestWithDbSuite) TestDeleteCategory() {
 
 	// Create a request to the category route
 	req := suite.GetJwtRequest(http.MethodDelete, fmt.Sprintf("/category/%v", categoryAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Comapre the response to the golden file
@@ -197,7 +193,6 @@ func (suite *TestWithDbSuite) TestCreateCategories() {
 	reqBodyJson, _ := json.Marshal(TEST_DATA_SKILLS)
 
 	req := suite.GetJwtRequest(http.MethodPost, "/categories", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200

@@ -124,7 +124,6 @@ func (suite *TestWithDbSuite) TestReadPerson() {
 
 	// Create a request to the person route
 	req := suite.GetJwtRequest(http.MethodGet, fmt.Sprintf("/person/%v", personAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -159,7 +158,6 @@ func (suite *TestWithDbSuite) TestUpdatePerson() {
 	reqBodyJson, _ := json.Marshal(personAdded)
 
 	req := suite.GetJwtRequest(http.MethodPost, fmt.Sprintf("/person/%v", personAdded.ID), bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -187,7 +185,6 @@ func (suite *TestWithDbSuite) TestDeletePerson() {
 
 	// Create a request to the person route
 	req := suite.GetJwtRequest(http.MethodDelete, fmt.Sprintf("/person/%v", personAdded.ID), nil)
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200

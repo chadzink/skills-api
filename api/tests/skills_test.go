@@ -56,7 +56,6 @@ func (suite *TestWithDbSuite) TestCreateSkill() {
 	reqBodyJson, _ := json.Marshal(skillToAdd)
 
 	req := suite.GetJwtRequest(http.MethodPost, "/skill", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -114,7 +113,6 @@ func (suite *TestWithDbSuite) TestUpdateSkill() {
 
 	reqBodyJson, _ := json.Marshal(skillAdded)
 	req := suite.GetJwtRequest(http.MethodPost, fmt.Sprintf("/skill/%v", skillAdded.ID), bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
@@ -185,7 +183,6 @@ func (suite *TestWithDbSuite) TestCreateSkills() {
 	reqBodyJson, _ := json.Marshal(TEST_DATA_SKILLS)
 
 	req := suite.GetJwtRequest(http.MethodPost, "/skills", bytes.NewReader(reqBodyJson))
-	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
