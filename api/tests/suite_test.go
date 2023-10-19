@@ -1,15 +1,21 @@
 package tests
 
 import (
+	"bytes"
+	"encoding/json"
+	"io"
 	"log"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
+	"github.com/chadzink/skills-api/auth"
 	"github.com/chadzink/skills-api/database"
 	"github.com/chadzink/skills-api/handlers"
 	"github.com/chadzink/skills-api/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sebdah/goldie/v2"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -21,6 +27,7 @@ type TestWithDbSuite struct {
 	app              *fiber.App
 	db               *gorm.DB
 	updateGoldenFile bool
+	jwt              string
 }
 
 // Make sure that VariableThatShouldStartAtFive is set to five
@@ -59,31 +66,36 @@ func TestWithDbRunSuite(t *testing.T) {
 }
 
 func setupTestRoutes(a *fiber.App) {
+	jwt := auth.NewAuthMiddleware(auth.JWTSecretKey)
+
+	// Create a Login route
+	a.Post("/auth/login", handlers.Login)
+	a.Post("/auth/register", handlers.RegisterNewUser)
 
 	// Set up the routes for categories
-	a.Post("/category", handlers.CreateCategory)
-	a.Get("/category/:id", handlers.ListCategory)
-	a.Post("/category/:id", handlers.UpdateCategory)
-	a.Delete("/category/:id", handlers.DeleteCategory)
-	a.Get("/categories", handlers.ListCategories)
-	a.Post("/categories", handlers.CreateCategories)
+	a.Post("/category", jwt, handlers.CreateCategory)
+	a.Get("/category/:id", jwt, handlers.ListCategory)
+	a.Post("/category/:id", jwt, handlers.UpdateCategory)
+	a.Delete("/category/:id", jwt, handlers.DeleteCategory)
+	a.Get("/categories", jwt, handlers.ListCategories)
+	a.Post("/categories", jwt, handlers.CreateCategories)
 
 	// Set up the routes for people
-	a.Post("/person", handlers.CreatePerson)
-	a.Get("/person/:id", handlers.ListPerson)
-	a.Post("/person/:id", handlers.UpdatePerson)
-	a.Delete("/person/:id", handlers.DeletePerson)
+	a.Post("/person", jwt, handlers.CreatePerson)
+	a.Get("/person/:id", jwt, handlers.ListPerson)
+	a.Post("/person/:id", jwt, handlers.UpdatePerson)
+	a.Delete("/person/:id", jwt, handlers.DeletePerson)
 
 	// Set up the routes for skills
-	a.Post("/skill", handlers.CreateSkill)
-	a.Get("/skill/:id", handlers.ListSkill)
-	a.Post("/skill/:id", handlers.UpdateSkill)
-	a.Delete("/skill/:id", handlers.DeleteSkill)
-	a.Get("/skills", handlers.ListSkills)
-	a.Post("/skills", handlers.CreateSkills)
+	a.Post("/skill", jwt, handlers.CreateSkill)
+	a.Get("/skill/:id", jwt, handlers.ListSkill)
+	a.Post("/skill/:id", jwt, handlers.UpdateSkill)
+	a.Delete("/skill/:id", jwt, handlers.DeleteSkill)
+	a.Get("/skills", jwt, handlers.ListSkills)
+	a.Post("/skills", jwt, handlers.CreateSkills)
 
 	// READ for expertise entity
-	a.Get("/expertises", handlers.ListExpertises)
+	a.Get("/expertises", jwt, handlers.ListExpertises)
 }
 
 func (suite *TestWithDbSuite) CheckResponseToGoldenFile(name string, filename string, resp *http.Response) {
@@ -120,10 +132,58 @@ func (suite *TestWithDbSuite) CheckResponsesToGoldenFile(name string, filename s
 	})
 }
 
+// This func of the suite is used to login and get a JWT token
+func (suit *TestWithDbSuite) GetJwtToken() string {
+	// Check if the suite jwt is already set
+	if suit.jwt != "" {
+		return suit.jwt
+	}
+
+	loginInfo := models.LoginRequest{
+		Email:    "test.user@email.com",
+		Password: "testpassword",
+	}
+
+	// Create a Login request
+	reqBodyJson, _ := json.Marshal(loginInfo)
+
+	req := httptest.NewRequest(http.MethodPost, "/auth/login", bytes.NewReader(reqBodyJson))
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	resp, _ := suit.app.Test(req)
+
+	// Confirm that the response status code is 200
+	assert.Equal(suit.T(), 200, resp.StatusCode)
+
+	// Confirm that the response body has a token
+	defer resp.Body.Close()
+	if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
+		suit.T().Error(err)
+	} else {
+		var loginResponse models.LoginResponse
+		if err := json.Unmarshal(bodyBytes, &loginResponse); err != nil {
+			suit.T().Error(err)
+		}
+
+		suit.jwt = loginResponse.Token
+	}
+
+	return suit.jwt
+}
+
+// get an HTTP request object that has the JWT token in the header when given a method, route, and body
+func (suit *TestWithDbSuite) GetJwtRequest(method string, route string, body io.Reader) *http.Request {
+
+	req := httptest.NewRequest(method, route, body)
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req.Header.Set("Authorization", "Bearer "+suit.GetJwtToken())
+	return req
+}
+
 type TestData struct {
 	skills     []models.Skill
 	categories []models.Category
 	people     []models.Person
+	users      []models.User
 }
 
 func seedDatabase(dal *database.DataAccessLayer) {
@@ -256,6 +316,16 @@ func seedDatabase(dal *database.DataAccessLayer) {
 				},
 			},
 		},
+		users: []models.User{
+			{
+				Model: gorm.Model{
+					ID: 1,
+				},
+				DisplayName: "Test User",
+				Email:       "test.user@email.com",
+				Password:    "testpassword",
+			},
+		},
 	}
 
 	// Link the skills and categories
@@ -274,5 +344,10 @@ func seedDatabase(dal *database.DataAccessLayer) {
 	// Add people to database
 	for _, person := range testData.people {
 		dal.CreatePerson(&person)
+	}
+
+	// Setup users
+	for _, user := range testData.users {
+		dal.RegisterNewUser(user.Email, user.DisplayName, user.Password)
 	}
 }

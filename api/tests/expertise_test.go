@@ -2,7 +2,6 @@ package tests
 
 import (
 	"net/http"
-	"net/http/httptest"
 
 	"github.com/stretchr/testify/assert" // add Testify package
 )
@@ -12,7 +11,7 @@ func (suite *TestWithDbSuite) TestListExpertise() {
 	suite.updateGoldenFile = true
 
 	// Create a request to the expertise route
-	req := httptest.NewRequest(http.MethodGet, "/expertises", nil)
+	req := suite.GetJwtRequest(http.MethodGet, "/expertises", nil)
 	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200

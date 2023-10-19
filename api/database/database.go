@@ -49,6 +49,7 @@ func ConnectDb() error {
 
 func MigrateDb(db *gorm.DB) {
 	log.Println("running migrations")
+	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Skill{})
 	db.AutoMigrate(&models.Category{})
 	db.AutoMigrate(&models.Person{})
