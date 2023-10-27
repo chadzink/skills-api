@@ -3,8 +3,8 @@ package database
 import (
 	"errors"
 
-	"github.com/chadzink/skills-api/auth"
-	"github.com/chadzink/skills-api/models"
+	"skills-api/auth"
+	"skills-api/models"
 )
 
 const MAX_FAILED_ATTEMPTS = 5

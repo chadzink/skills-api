@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/chadzink/skills-api/auth"
-	"github.com/chadzink/skills-api/handlers"
+	"skills-api/auth"
+	"skills-api/handlers"
+
 	"github.com/gofiber/fiber/v2"
 )
 

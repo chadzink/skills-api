@@ -6,9 +6,12 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/chadzink/skills-api/handlers"
+	"skills-api/handlers"
 )
 
+// Gets the response body as a string and removes the created_at & updated_at fields from the response
+//
+//	This is important becaus ethe created_at & updated_at fields cannot be compared to the golden files if they always change
 func GetResponseBodyString(t *testing.T, resp *http.Response) string {
 	defer resp.Body.Close()
 	if resBodyBytes, err := io.ReadAll(resp.Body); err != nil {
@@ -32,6 +35,9 @@ func GetResponseBodyString(t *testing.T, resp *http.Response) string {
 	return ""
 }
 
+// Gets the response body for multipel records as a string and removes the created_at & updated_at fields from the response
+//
+//	This is important becaus ethe created_at & updated_at fields cannot be compared to the golden files if they always change
 func GetResponsesBodyString(t *testing.T, resp *http.Response) string {
 	defer resp.Body.Close()
 	if resBodyBytes, err := io.ReadAll(resp.Body); err != nil {
@@ -57,6 +63,7 @@ func GetResponsesBodyString(t *testing.T, resp *http.Response) string {
 	return ""
 }
 
+// Removes the created_at & updated_at fields from the response map[string]interface{} object
 func RemoveDatesFromResponseData(data map[string]interface{}) map[string]interface{} {
 	// remove the created_at & updated_at fields from the response
 	delete(data, "CreatedAt")
