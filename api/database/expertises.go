@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/chadzink/skills-api/models"
+	"skills-api/models"
 )
 
 // Create a new expertise entity

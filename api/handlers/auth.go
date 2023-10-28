@@ -3,9 +3,11 @@ package handlers
 import (
 	"time"
 
-	"github.com/chadzink/skills-api/auth"
-	"github.com/chadzink/skills-api/database"
-	"github.com/chadzink/skills-api/models"
+	"skills-api/auth"
+
+	"skills-api/database"
+	"skills-api/models"
+
 	"github.com/gofiber/fiber/v2"
 	jtoken "github.com/golang-jwt/jwt/v4"
 )

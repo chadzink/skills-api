@@ -9,10 +9,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/chadzink/skills-api/auth"
-	"github.com/chadzink/skills-api/database"
-	"github.com/chadzink/skills-api/handlers"
-	"github.com/chadzink/skills-api/models"
+	"skills-api/auth"
+	"skills-api/database"
+	"skills-api/handlers"
+	"skills-api/models"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/sebdah/goldie/v2"
 	"github.com/stretchr/testify/assert"

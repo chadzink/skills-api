@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/chadzink/skills-api/models"
+	"skills-api/models"
 )
 
 // Function to add associated categories to skill

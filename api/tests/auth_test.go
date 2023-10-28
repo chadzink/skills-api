@@ -7,7 +7,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/chadzink/skills-api/models"
+	"skills-api/models"
+
 	"github.com/stretchr/testify/assert"
 )
 

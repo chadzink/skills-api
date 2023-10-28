@@ -1,7 +1,8 @@
 package tests
 
 import (
-	"github.com/chadzink/skills-api/database"
+	"skills-api/database"
+
 	"github.com/stretchr/testify/assert"
 )
 

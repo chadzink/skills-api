@@ -5,3 +5,9 @@ dev:
 
 down:
 	docker-compose -f docker-compose.yaml down
+
+clean:
+	docker image rm skills-api-web
+
+logs:
+	docker-compose -f docker-compose.yaml logs -f
