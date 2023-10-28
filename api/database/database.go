@@ -5,7 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/chadzink/skills-api/models"
+	"skills-api/models"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

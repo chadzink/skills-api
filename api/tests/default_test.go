@@ -4,7 +4,8 @@ import (
 	"io"
 	"net/http/httptest"
 
-	"github.com/chadzink/skills-api/handlers"
+	"skills-api/handlers"
+
 	"github.com/stretchr/testify/assert" // add Testify package
 )
 

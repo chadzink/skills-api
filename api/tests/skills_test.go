@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/chadzink/skills-api/database"
-	"github.com/chadzink/skills-api/models"
+	"skills-api/database"
+	"skills-api/models"
+
 	"github.com/stretchr/testify/assert" // add Testify package
 )
 

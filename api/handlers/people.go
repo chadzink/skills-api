@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"github.com/chadzink/skills-api/database"
-	"github.com/chadzink/skills-api/models"
+	"skills-api/database"
+	"skills-api/models"
+
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -5,3 +5,6 @@ test:
 
 test-short:
 	go test ./tests/... -v -test.short
+
+build:
+	go build -buildvcs=false -o ./tmp/main .
