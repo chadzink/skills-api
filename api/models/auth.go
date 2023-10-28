@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -30,4 +32,11 @@ type User struct {
 	Password       string `json:"password" gorm:"text;not null"`
 	FailedAttempts int    `json:"failed_attempts" gorm:"int;not null;default:0"`
 	Locked         bool   `json:"locked" gorm:"bool;not null;default:false"`
+}
+
+type UserAPIKey struct {
+	gorm.Model
+	UserID    uint      `json:"user_id" gorm:"int;not null"`
+	Key       string    `json:"key" gorm:"text;not null;unique"`
+	ExpiresOn time.Time `json:"expires_on" gorm:"timestamp;not null"`
 }
