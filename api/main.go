@@ -20,6 +20,9 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/auth/login", handlers.Login)
 	app.Post("/auth/register", handlers.RegisterNewUser)
 
+	// Set up the routes for create user API key
+	app.Post("/user/api_key", authMiddleware, handlers.CreateAPIKey)
+
 	// CRUD for skill entity
 	app.Post("/skill", authMiddleware, handlers.CreateSkill)
 	app.Get("/skill/:id", authMiddleware, handlers.ListSkill)

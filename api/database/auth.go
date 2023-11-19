@@ -70,3 +70,25 @@ func (dal *DataAccessLayer) RegisterNewUser(email, displayName, password string)
 
 	return &user, nil
 }
+
+// The CreateUserAPIKey method generates a unique API key string for the user based on the user ID
+func (dal *DataAccessLayer) CreateUserAPIKey() (string, error) {
+	// Generate a new API key
+	apiKey, err := auth.GenerateRandomString(32)
+	if err != nil {
+		return "", err
+	}
+
+	// Check if the API key already exists
+	var existingUser models.User
+	if err := dal.Db.Where("api_key = ?", apiKey).First(&existingUser).Error; err == nil {
+		return "", errors.New("api key already exists")
+	}
+
+	// Update the user with the new API key
+	if err := dal.Db.Model(&existingUser).Update("api_key", apiKey).Error; err != nil {
+		return "", err
+	}
+
+	return apiKey, nil
+}

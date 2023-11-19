@@ -100,3 +100,16 @@ func RegisterNewUser(c *fiber.Ctx) error {
 		Token: token,
 	})
 }
+
+// Create UserAPIKey handler, this generated a unique API key string for the user based on the user ID
+func CreateAPIKey(c *fiber.Ctx) error {
+	// Create the API Key
+	apiKey, err := database.DAL.CreateUserAPIKey()
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(apiKey)
+}

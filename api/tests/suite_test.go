@@ -67,36 +67,39 @@ func TestWithDbRunSuite(t *testing.T) {
 }
 
 func setupTestRoutes(a *fiber.App) {
-	jwt := auth.NewAuthMiddleware(auth.JWTSecretKey)
+	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
 
 	// Create a Login route
 	a.Post("/auth/login", handlers.Login)
 	a.Post("/auth/register", handlers.RegisterNewUser)
 
+	// Set up the routes for create user API key
+	a.Post("/user/api_key", handlers.CreateAPIKey)
+
 	// Set up the routes for categories
-	a.Post("/category", jwt, handlers.CreateCategory)
-	a.Get("/category/:id", jwt, handlers.ListCategory)
-	a.Post("/category/:id", jwt, handlers.UpdateCategory)
-	a.Delete("/category/:id", jwt, handlers.DeleteCategory)
-	a.Get("/categories", jwt, handlers.ListCategories)
-	a.Post("/categories", jwt, handlers.CreateCategories)
+	a.Post("/category", authMiddleware, handlers.CreateCategory)
+	a.Get("/category/:id", authMiddleware, handlers.ListCategory)
+	a.Post("/category/:id", authMiddleware, handlers.UpdateCategory)
+	a.Delete("/category/:id", authMiddleware, handlers.DeleteCategory)
+	a.Get("/categories", authMiddleware, handlers.ListCategories)
+	a.Post("/categories", authMiddleware, handlers.CreateCategories)
 
 	// Set up the routes for people
-	a.Post("/person", jwt, handlers.CreatePerson)
-	a.Get("/person/:id", jwt, handlers.ListPerson)
-	a.Post("/person/:id", jwt, handlers.UpdatePerson)
-	a.Delete("/person/:id", jwt, handlers.DeletePerson)
+	a.Post("/person", authMiddleware, handlers.CreatePerson)
+	a.Get("/person/:id", authMiddleware, handlers.ListPerson)
+	a.Post("/person/:id", authMiddleware, handlers.UpdatePerson)
+	a.Delete("/person/:id", authMiddleware, handlers.DeletePerson)
 
 	// Set up the routes for skills
-	a.Post("/skill", jwt, handlers.CreateSkill)
-	a.Get("/skill/:id", jwt, handlers.ListSkill)
-	a.Post("/skill/:id", jwt, handlers.UpdateSkill)
-	a.Delete("/skill/:id", jwt, handlers.DeleteSkill)
-	a.Get("/skills", jwt, handlers.ListSkills)
-	a.Post("/skills", jwt, handlers.CreateSkills)
+	a.Post("/skill", authMiddleware, handlers.CreateSkill)
+	a.Get("/skill/:id", authMiddleware, handlers.ListSkill)
+	a.Post("/skill/:id", authMiddleware, handlers.UpdateSkill)
+	a.Delete("/skill/:id", authMiddleware, handlers.DeleteSkill)
+	a.Get("/skills", authMiddleware, handlers.ListSkills)
+	a.Post("/skills", authMiddleware, handlers.CreateSkills)
 
 	// READ for expertise entity
-	a.Get("/expertises", jwt, handlers.ListExpertises)
+	a.Get("/expertises", authMiddleware, handlers.ListExpertises)
 }
 
 func (suite *TestWithDbSuite) CheckResponseToGoldenFile(name string, filename string, resp *http.Response) {

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"crypto/md5"
+	"crypto/rand"
 	"encoding/hex"
 	"errors"
 )
@@ -33,4 +34,29 @@ func CheckPassword(password, encoded string) error {
 	}
 
 	return nil
+}
+
+// The GenerateRandomString method generates a random string of a specified length
+func GenerateRandomString(length int) (string, error) {
+
+	generateRandomBytes := func(n int) ([]byte, error) {
+		// Create a byte slice of the specified length
+		b := make([]byte, n)
+
+		// Generate random bytes and store them in the byte slice
+		if _, err := rand.Read(b); err != nil {
+			return nil, err
+		}
+
+		return b, nil
+
+	}
+
+	// Generate a random string of a specified length
+	randomString, err := generateRandomBytes(length)
+	if err != nil {
+		return "", err
+	}
+
+	return string(randomString), nil
 }

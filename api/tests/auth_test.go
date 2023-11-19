@@ -79,3 +79,12 @@ func (suite *TestWithDbSuite) TestLogin() {
 		assert.NotEmpty(suite.T(), loginResponse.Token, "Token should not be empty")
 	}
 }
+
+// Test create API key request, this is a protected route that requires a valid JWT token for specific user
+func (suite *TestWithDbSuite) TestCreateAPIKeyForUser() {
+	req := suite.GetJwtRequest(http.MethodPost, "/user/api_key", nil)
+	resp, _ := suite.app.Test(req)
+
+	// Confirm that the response status code is 200
+	assert.Equal(suite.T(), 200, resp.StatusCode)
+}
