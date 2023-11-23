@@ -7,7 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// CreateSkill creates a new skill entity
+// @Summary Create a new skill
+// @Description Create a new skill entity
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Param skill body interface{} true "Skill JSON object that needs to be created"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skill [post]
 func CreateSkill(c *fiber.Ctx) error {
 	skill := new(models.Skill)
 
@@ -20,7 +30,17 @@ func CreateSkill(c *fiber.Ctx) error {
 	return DataResponse(c, skill)
 }
 
-// CreateSkills creates one or more new skill entities
+// @Summary Create one or more new skills
+// @Description Create one or more new skill entities
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Param skills body []interface{} true "Array of Skill objects in JSON that need to be created"
+// @Success 200 {object} []interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skills [post]
 func CreateSkills(c *fiber.Ctx) error {
 	parsedSkills := new([]models.Skill)
 
@@ -38,7 +58,17 @@ func CreateSkills(c *fiber.Ctx) error {
 	return DataResponse(c, createdSkills)
 }
 
-// ListSkill lists a skill by id
+// @Summary List a skill by id
+// @Description List a skill by id
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Param id path int true "Skill JSON object"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skill/{id} [get]
 func ListSkill(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {
@@ -54,7 +84,16 @@ func ListSkill(c *fiber.Ctx) error {
 	return DataResponse(c, skill)
 }
 
-// ListSkills lists all skills
+// @Summary List all skills
+// @Description List all skills
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Success 200 {object} []interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skills [get]
 func ListSkills(c *fiber.Ctx) error {
 	// TO DO: Add paging to this endpoint
 
@@ -67,7 +106,18 @@ func ListSkills(c *fiber.Ctx) error {
 	return DataResponse(c, skills)
 }
 
-// UpdateSkill updates a skill by id
+// @Summary Update a skill by id
+// @Description Update a skill by id
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Param id path int true "Skill ID"
+// @Param skill body interface{} true "Skill JSON object that needs to be updated"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skill/{id} [post]
 func UpdateSkill(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {
@@ -90,7 +140,17 @@ func UpdateSkill(c *fiber.Ctx) error {
 	return DataResponse(c, skill)
 }
 
-// DeleteSkill deletes a skill by id
+// @Summary Delete a skill by id
+// @Description Delete a skill by id
+// @Tags Skills
+// @Accept json
+// @Produce json
+// @Param id path int true "Skill JSON object"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /skill/{id} [delete]
 func DeleteSkill(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {

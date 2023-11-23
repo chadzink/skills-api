@@ -7,7 +7,17 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// CreatePerson creates a new person entity
+// @Summary Create a new person
+// @Description Create a new person entity
+// @Tags People
+// @Accept json
+// @Produce json
+// @Param person body interface{} true "Person JSON object that needs to be created"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /person [post]
 func CreatePerson(c *fiber.Ctx) error {
 	person := new(models.Person)
 
@@ -20,7 +30,16 @@ func CreatePerson(c *fiber.Ctx) error {
 	return DataResponse(c, person)
 }
 
-// ListPerson lists a person by id
+// @Summary List a person by id
+// @Description List a person by id
+// @Tags People
+// @Produce json
+// @Param id path int true "Person ID"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /person/{id} [get]
 func ListPerson(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {
@@ -36,7 +55,15 @@ func ListPerson(c *fiber.Ctx) error {
 	return DataResponse(c, person)
 }
 
-// ListPeople lists all people
+// @Summary List all people
+// @Description List all people
+// @Tags People
+// @Produce json
+// @Success 200 {object} []interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /people [get]
 func ListPeople(c *fiber.Ctx) error {
 	// TODO: Add pagination
 
@@ -49,7 +76,18 @@ func ListPeople(c *fiber.Ctx) error {
 	return DataResponse(c, people)
 }
 
-// UpdatePerson updates a person by id
+// @Summary Update a person by id
+// @Description Update a person by id
+// @Tags People
+// @Accept json
+// @Produce json
+// @Param id path int true "Person ID"
+// @Param person body interface{} true "Person JSON object that needs to be updated"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /person/{id} [put]
 func UpdatePerson(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {
@@ -71,7 +109,17 @@ func UpdatePerson(c *fiber.Ctx) error {
 	return DataResponse(c, person)
 }
 
-// DeletePerson deletes a person by id
+// @Summary Delete a person by id
+// @Description Delete a person by id
+// @Tags People
+// @Accept json
+// @Produce json
+// @Param id path int true "Person ID"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Security ApiKeyAuth
+// @Router /person/{id} [delete]
 func DeletePerson(c *fiber.Ctx) error {
 	id, err := GetValidId(c)
 	if err != nil {

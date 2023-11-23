@@ -37,7 +37,16 @@ func CreateJWTToken(user *models.User) (string, error) {
 	return t, nil
 }
 
-// Login handler for user authentication
+// @Summary User Login
+// @Description Login with email and password
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param loginRequest body interface{} true "Login JSON object that needs to be created"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Router /auth/login [post]
 func Login(c *fiber.Ctx) error {
 	// Extract the credentials from the request body
 	loginRequest := new(models.LoginRequest)
@@ -69,7 +78,16 @@ func Login(c *fiber.Ctx) error {
 	})
 }
 
-// New User Register handler
+// @Summary New User Register
+// @Description Register a new user
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param registerRequest body interface{} true "Register JSON object that needs to be created"
+// @Success 200 {object} interface{}
+// @Failure 400 {object} interface{}
+// @Failure 500 {object} interface{}
+// @Router /auth/register [post]
 func RegisterNewUser(c *fiber.Ctx) error {
 	// Extract the credentials from the request body
 	registerRequest := new(models.RegisterRequest)
