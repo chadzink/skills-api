@@ -15,7 +15,7 @@ import (
 )
 
 func setupRoutes(app *fiber.App) {
-	authMiddleware := auth.NewAuthMiddleware("secret")
+	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
 
 	app.Get("/", handlers.Default)
 	app.Get("/version", handlers.Version)
