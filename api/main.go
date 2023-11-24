@@ -7,11 +7,15 @@ import (
 	"skills-api/database"
 	"skills-api/handlers"
 
+	_ "skills-api/docs"
+
+	fiberSwagger "github.com/swaggo/fiber-swagger" // swagger embed files
+
 	"github.com/gofiber/fiber/v2"
 )
 
 func setupRoutes(app *fiber.App) {
-	authMiddleware := auth.NewAuthMiddleware("secret")
+	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
 
 	app.Get("/", handlers.Default)
 	app.Get("/version", handlers.Version)
@@ -50,6 +54,19 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/expertises", authMiddleware, handlers.ListExpertises)
 }
 
+// @title Skills API Swagger Documentation
+// @version 0.1.0
+// @description This is an example project built with Fiber and GORM to demonstrate how to build RESTful APIs with Go.
+// @termsOfService http://swagger.io/terms/
+// @contact.name Chad Zink
+// @contact.url http://www.chadzink.com
+// @contact.email me@chadzink.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+// @BasePath /
 func main() {
 	dbConnectError := database.ConnectDb()
 	if dbConnectError != nil {
@@ -57,6 +74,9 @@ func main() {
 	}
 
 	app := fiber.New()
+
+	// Serve the Swagger UI at /swagger/index.html
+	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 
 	setupRoutes(app)
 

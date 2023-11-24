@@ -18,7 +18,7 @@ func GetResponseBodyString(t *testing.T, resp *http.Response) string {
 		t.Error(err)
 	} else {
 		// parse the response body
-		var responseObject handlers.ResponseResult
+		var responseObject handlers.ResponseResult[map[string]interface{}]
 		if err := json.Unmarshal(resBodyBytes, &responseObject); err != nil {
 			t.Error(err)
 		}
@@ -44,7 +44,7 @@ func GetResponsesBodyString(t *testing.T, resp *http.Response) string {
 		t.Error(err)
 	} else {
 		// parse the response body
-		var responseObjects handlers.ResponseResults
+		var responseObjects handlers.ResponseResults[map[string]interface{}]
 		if err := json.Unmarshal(resBodyBytes, &responseObjects); err != nil {
 			t.Error(err)
 		}

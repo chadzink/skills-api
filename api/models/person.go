@@ -5,13 +5,13 @@ import (
 )
 
 type Person struct {
-	gorm.Model
-	Name    string `json:"name" gorm:"text;not null`
-	Email   string `json:"email" gorm:"text;null;default:null`
-	Phone   string `json:"phone" gorm:"text;null;default:null`
-	Profile string `json:"profile" gorm:"text;null;default:null`
+	gorm.Model `json:"-" swaggerignore:"true"`
+	Name       string `json:"name" gorm:"text;not null`
+	Email      string `json:"email" gorm:"text;null;default:null`
+	Phone      string `json:"phone" gorm:"text;null;default:null`
+	Profile    string `json:"profile" gorm:"text;null;default:null`
 
-	PersonSkills []*PersonSkill `json:"person_skills" gorm:"foreignKey:PersonID"`
+	PersonSkills []*PersonSkill `json:"person_skills" gorm:"foreignKey:PersonID" swaggerignore:"true"`
 }
 
 // Example of categories in JSON

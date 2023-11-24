@@ -5,16 +5,16 @@ import (
 )
 
 type Skill struct {
-	gorm.Model
+	gorm.Model  `json:"-" swaggerignore:"true"`
 	Name        string `json:"name" gorm:"text;not null`
 	Description string `json:"description" gorm:"text;null;default:null`
 	ShortKey    string `json:"short_key" gorm:"text;not null;default:null`
 	Active      bool   `json:"active" gorm:"bit;not null;default:1`
 
-	Categories []*Category `json:"categories" gorm:"many2many:skill_category;"`
+	Categories []*Category `json:"categories" gorm:"many2many:skill_category;" swaggerignore:"true"`
 
 	// Additional fields that are not stored in the database
-	CategoryIds []uint `json:"category_ids" gorm:"-"`
+	CategoryIds []uint `json:"category_ids" gorm:"-" swaggerignore:"true"`
 }
 
 // Example of skills in JSON

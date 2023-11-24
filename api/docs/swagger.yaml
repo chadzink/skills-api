@@ -1,0 +1,924 @@
+definitions:
+  handlers.DeletResponse-models_Category:
+    properties:
+      data:
+        $ref: '#/definitions/models.Category'
+      id: {}
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handlers.ErrorResult-array_models_Person:
+    properties:
+      data:
+        $ref: '#/definitions/models.Person'
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.ErrorResult-array_models_Skill:
+    properties:
+      data:
+        $ref: '#/definitions/models.Skill'
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.ErrorResult-models_Category:
+    properties:
+      data:
+        $ref: '#/definitions/models.Category'
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.ErrorResult-models_Person:
+    properties:
+      data:
+        $ref: '#/definitions/models.Person'
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.ErrorResult-models_Skill:
+    properties:
+      data:
+        $ref: '#/definitions/models.Skill'
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.InvalidIdResult-array_models_Category:
+    properties:
+      data:
+        $ref: '#/definitions/models.Category'
+      invalid_id: {}
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.InvalidIdResult-array_models_Expertise:
+    properties:
+      data:
+        $ref: '#/definitions/models.Expertise'
+      invalid_id: {}
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.InvalidIdResult-models_Category:
+    properties:
+      data:
+        $ref: '#/definitions/models.Category'
+      invalid_id: {}
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.InvalidIdResult-models_Person:
+    properties:
+      data:
+        $ref: '#/definitions/models.Person'
+      invalid_id: {}
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.InvalidIdResult-models_Skill:
+    properties:
+      data:
+        $ref: '#/definitions/models.Skill'
+      invalid_id: {}
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+  handlers.ResponseResult-array_models_Category:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Category'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-array_models_Person:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Person'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-array_models_Skill:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Skill'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-models_Category:
+    properties:
+      data:
+        $ref: '#/definitions/models.Category'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-models_Person:
+    properties:
+      data:
+        $ref: '#/definitions/models.Person'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-models_Skill:
+    properties:
+      data:
+        $ref: '#/definitions/models.Skill'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResults-array_models_Expertise:
+    properties:
+      data:
+        items:
+          items:
+            $ref: '#/definitions/models.Expertise'
+          type: array
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.VersionResponse:
+    properties:
+      version:
+        example: 0.1.0
+        type: string
+    type: object
+  models.Category:
+    properties:
+      active:
+        type: boolean
+      description:
+        type: string
+      name:
+        type: string
+      short_key:
+        type: string
+    type: object
+  models.Expertise:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      order:
+        type: integer
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  models.Person:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      profile:
+        type: string
+    type: object
+  models.RegisterRequest:
+    properties:
+      display_name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  models.Skill:
+    properties:
+      active:
+        type: boolean
+      description:
+        type: string
+      name:
+        type: string
+      short_key:
+        type: string
+    type: object
+info:
+  contact:
+    email: me@chadzink.com
+    name: Chad Zink
+    url: http://www.chadzink.com
+  description: This is an example project built with Fiber and GORM to demonstrate
+    how to build RESTful APIs with Go.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Skills API Swagger Documentation
+  version: 0.1.0
+paths:
+  /:
+    get:
+      description: Home (default) route
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Home
+      tags:
+      - Home
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login with email and password
+      parameters:
+      - description: Login JSON object that needs to be created
+        in: body
+        name: loginRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: User Login
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: Register JSON object that needs to be created
+        in: body
+        name: registerRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: New User Register
+      tags:
+      - Auth
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: List all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-array_models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: List all categories
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Create one or more new category entities
+      parameters:
+      - description: Array of Category objects in JSON that need to be created
+        in: body
+        name: categories
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.Category'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Create one or more new categories
+      tags:
+      - Categories
+  /category:
+    post:
+      consumes:
+      - application/json
+      description: Create a new category entity
+      parameters:
+      - description: Category JSON object that needs to be created
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new category
+      tags:
+      - Categories
+  /category/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a category by id
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.DeletResponse-models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a category by id
+      tags:
+      - Categories
+    get:
+      consumes:
+      - application/json
+      description: List a category by id
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Show a category by id
+      tags:
+      - Categories
+    post:
+      consumes:
+      - application/json
+      description: Update a category by id
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category JSON object that needs to be updated
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/models.Category'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Category'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Category'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a category by id
+      tags:
+      - Categories
+  /expertises:
+    get:
+      description: List all expertises
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResults-array_models_Expertise'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-array_models_Expertise'
+      security:
+      - ApiKeyAuth: []
+      summary: List all expertises
+      tags:
+      - Expertises
+  /people:
+    get:
+      description: List all people
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_Person'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-array_models_Person'
+      security:
+      - ApiKeyAuth: []
+      summary: List all people
+      tags:
+      - People
+  /person:
+    post:
+      consumes:
+      - application/json
+      description: Create a new person entity
+      parameters:
+      - description: Person JSON object that needs to be created
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/models.Person'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Person'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-models_Person'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new person
+      tags:
+      - People
+  /person/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a person by id
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Person'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Person'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a person by id
+      tags:
+      - People
+    get:
+      description: List a person by id
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Person'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Person'
+      security:
+      - ApiKeyAuth: []
+      summary: List a person by id
+      tags:
+      - People
+    put:
+      consumes:
+      - application/json
+      description: Update a person by id
+      parameters:
+      - description: Person ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Person JSON object that needs to be updated
+        in: body
+        name: person
+        required: true
+        schema:
+          $ref: '#/definitions/models.Person'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Person'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Person'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a person by id
+      tags:
+      - People
+  /skill:
+    post:
+      consumes:
+      - application/json
+      description: Create a new skill entity
+      parameters:
+      - description: Skill JSON object that needs to be created
+        in: body
+        name: skill
+        required: true
+        schema:
+          $ref: '#/definitions/models.Skill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new skill
+      tags:
+      - Skills
+  /skill/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a skill by id
+      parameters:
+      - description: Skill JSON object
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a skill by id
+      tags:
+      - Skills
+    get:
+      consumes:
+      - application/json
+      description: List a skill by id
+      parameters:
+      - description: Skill JSON object
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: List a skill by id
+      tags:
+      - Skills
+    post:
+      consumes:
+      - application/json
+      description: Update a skill by id
+      parameters:
+      - description: Skill ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Skill JSON object that needs to be updated
+        in: body
+        name: skill
+        required: true
+        schema:
+          $ref: '#/definitions/models.Skill'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.InvalidIdResult-models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a skill by id
+      tags:
+      - Skills
+  /skills:
+    get:
+      consumes:
+      - application/json
+      description: List all skills
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-array_models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: List all skills
+      tags:
+      - Skills
+    post:
+      consumes:
+      - application/json
+      description: Create one or more new skill entities
+      parameters:
+      - description: Array of Skill objects in JSON that need to be created
+        in: body
+        name: skills
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/models.Skill'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_Skill'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResult-models_Skill'
+      security:
+      - ApiKeyAuth: []
+      summary: Create one or more new skills
+      tags:
+      - Skills
+  /version:
+    get:
+      description: Version route
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.VersionResponse'
+      summary: Version
+      tags:
+      - Home
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

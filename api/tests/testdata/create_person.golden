@@ -1,12 +1,10 @@
 {
 	"data": {
-		"ID": 4,
 		"email": "dave@email.com",
 		"name": "Dave",
 		"person_skills": [
 			{
 				"expertise": {
-					"ID": 5,
 					"description": "N/A is used when the level of expertise is not applicable.",
 					"name": "N/A",
 					"order": 5
@@ -15,7 +13,6 @@
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
 				"skill": {
-					"ID": 1,
 					"active": true,
 					"categories": null,
 					"category_ids": null,
@@ -27,7 +24,6 @@
 			},
 			{
 				"expertise": {
-					"ID": 4,
 					"description": "An expert is a person who is very knowledgeable about or skilful in a particular area.",
 					"name": "Expert",
 					"order": 4
@@ -36,7 +32,6 @@
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
 				"skill": {
-					"ID": 2,
 					"active": true,
 					"categories": null,
 					"category_ids": null,
@@ -51,5 +46,5 @@
 		"profile": "Dave is a software developer with 5 years of experience."
 	},
 	"success": true,
-	"message": ""
+	"message": "Operation was successful"
 }

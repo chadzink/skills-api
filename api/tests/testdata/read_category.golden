@@ -1,6 +1,5 @@
 {
 	"data": {
-		"ID": 5,
 		"active": true,
 		"description": "Leadership is the ability to lead others.",
 		"name": "Leadership",
@@ -11,7 +10,6 @@
 		],
 		"skills": [
 			{
-				"ID": 2,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -20,7 +18,6 @@
 				"short_key": "js"
 			},
 			{
-				"ID": 3,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -31,5 +28,5 @@
 		]
 	},
 	"success": true,
-	"message": ""
+	"message": "Operation was successful"
 }
