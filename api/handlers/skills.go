@@ -12,10 +12,10 @@ import (
 // @Tags Skills
 // @Accept json
 // @Produce json
-// @Param skill body interface{} true "Skill JSON object that needs to be created"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param skill body models.Skill true "Skill JSON object that needs to be created"
+// @Success 200 {object} ResponseResult[models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[models.Skill]
 // @Security ApiKeyAuth
 // @Router /skill [post]
 func CreateSkill(c *fiber.Ctx) error {
@@ -35,10 +35,10 @@ func CreateSkill(c *fiber.Ctx) error {
 // @Tags Skills
 // @Accept json
 // @Produce json
-// @Param skills body []interface{} true "Array of Skill objects in JSON that need to be created"
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param skills body []models.Skill true "Array of Skill objects in JSON that need to be created"
+// @Success 200 {object} ResponseResult[[]models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[models.Skill]
 // @Security ApiKeyAuth
 // @Router /skills [post]
 func CreateSkills(c *fiber.Ctx) error {
@@ -64,9 +64,9 @@ func CreateSkills(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Skill JSON object"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Skill]
 // @Security ApiKeyAuth
 // @Router /skill/{id} [get]
 func ListSkill(c *fiber.Ctx) error {
@@ -89,9 +89,9 @@ func ListSkill(c *fiber.Ctx) error {
 // @Tags Skills
 // @Accept json
 // @Produce json
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[[]models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[[]models.Skill]
 // @Security ApiKeyAuth
 // @Router /skills [get]
 func ListSkills(c *fiber.Ctx) error {
@@ -112,10 +112,10 @@ func ListSkills(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Skill ID"
-// @Param skill body interface{} true "Skill JSON object that needs to be updated"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param skill body models.Skill true "Skill JSON object that needs to be updated"
+// @Success 200 {object} ResponseResult[models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Skill]
 // @Security ApiKeyAuth
 // @Router /skill/{id} [post]
 func UpdateSkill(c *fiber.Ctx) error {
@@ -146,9 +146,9 @@ func UpdateSkill(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Skill JSON object"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[models.Skill]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Skill]
 // @Security ApiKeyAuth
 // @Router /skill/{id} [delete]
 func DeleteSkill(c *fiber.Ctx) error {

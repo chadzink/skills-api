@@ -175,7 +175,7 @@ func (suite *TestWithDbSuite) TestListSkills() {
 
 // TestCreateSkills tests the POST /skills route
 func (suite *TestWithDbSuite) TestCreateSkills() {
-	suite.updateGoldenFile = true
+	// suite.updateGoldenFile = true
 
 	// calculate the total skills in the database before adding a new one
 	totalSkillsBefore, _ := database.DAL.GetAllSkills()

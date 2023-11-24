@@ -1,9 +1,8 @@
 {
 	"success": true,
-	"message": "",
+	"message": "Operation was successful",
 	"data": [
 		{
-			"ID": 5,
 			"active": true,
 			"description": "Boat building is the design and construction of boats and their systems. This includes at a minimum a hull, with propulsion, mechanical, navigation, safety and other systems as a craft requires.",
 			"name": "Boat Building",
@@ -12,7 +11,6 @@
 			"skills": null
 		},
 		{
-			"ID": 6,
 			"active": true,
 			"description": "Drywall mudding is the process of applying drywall mud to drywall seams.",
 			"name": "Drywall Mudding",
@@ -21,7 +19,6 @@
 			"skills": null
 		},
 		{
-			"ID": 7,
 			"active": true,
 			"description": "Roadmap planning is the process of planning a roadmap.",
 			"name": "Roadmap Planning",
@@ -30,7 +27,6 @@
 			"skills": null
 		},
 		{
-			"ID": 8,
 			"active": true,
 			"description": "Data modeling is the process of creating a data model for the data to be stored in a database.",
 			"name": "Data Modeling",

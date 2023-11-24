@@ -12,10 +12,10 @@ import (
 // @Tags Categories
 // @Accept json
 // @Produce json
-// @Param category body interface{} true "Category JSON object that needs to be created"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param category body models.Category true "Category JSON object that needs to be created"
+// @Success 200 {object} ResponseResult[models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[models.Category]
 // @Security ApiKeyAuth
 // @Router /category [post]
 func CreateCategory(c *fiber.Ctx) error {
@@ -35,10 +35,10 @@ func CreateCategory(c *fiber.Ctx) error {
 // @Tags Categories
 // @Accept json
 // @Produce json
-// @Param categories body []interface{} true "Array of Category objects in JSON that need to be created"
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param categories body []models.Category true "Array of Category objects in JSON that need to be created"
+// @Success 200 {object} ResponseResult[[]models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[models.Category]
 // @Security ApiKeyAuth
 // @Router /categories [post]
 func CreateCategories(c *fiber.Ctx) error {
@@ -58,15 +58,15 @@ func CreateCategories(c *fiber.Ctx) error {
 	return DataResponse(c, createdCategories)
 }
 
-// @Summary List a category by id
+// @Summary Show a category by id
 // @Description List a category by id
 // @Tags Categories
 // @Accept json
 // @Produce json
 // @Param id path int true "Category ID"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Category]
 // @Security ApiKeyAuth
 // @Router /category/{id} [get]
 func ListCategory(c *fiber.Ctx) error {
@@ -89,9 +89,9 @@ func ListCategory(c *fiber.Ctx) error {
 // @Tags Categories
 // @Accept json
 // @Produce json
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[[]models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[[]models.Category]
 // @Security ApiKeyAuth
 // @Router /categories [get]
 func ListCategories(c *fiber.Ctx) error {
@@ -112,10 +112,10 @@ func ListCategories(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Category ID"
-// @Param category body interface{} true "Category JSON object that needs to be updated"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param category body models.Category true "Category JSON object that needs to be updated"
+// @Success 200 {object} ResponseResult[models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Category]
 // @Security ApiKeyAuth
 // @Router /category/{id} [post]
 func UpdateCategory(c *fiber.Ctx) error {
@@ -145,9 +145,9 @@ func UpdateCategory(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Category ID"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} DeletResponse[models.Category]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Category]
 // @Security ApiKeyAuth
 // @Router /category/{id} [delete]
 func DeleteCategory(c *fiber.Ctx) error {

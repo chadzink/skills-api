@@ -10,8 +10,8 @@ type PersonSkill struct {
 	ExpertiseID uint      `json:"expertise_id" gorm:"int;default:0"`
 	LastUsed    time.Time `json:"last_used" gorm:"datetime;null;default:null"`
 
-	Skill     Skill     `json:"skill" gorm:"foreignKey:SkillID"`
-	Expertise Expertise `json:"expertise" gorm:"foreignKey:ExpertiseID"`
+	Skill     Skill     `json:"skill" gorm:"foreignKey:SkillID" swaggerignore:"true"`
+	Expertise Expertise `json:"expertise" gorm:"foreignKey:ExpertiseID" swaggerignore:"true"`
 }
 
 // Example of person skill in JSON

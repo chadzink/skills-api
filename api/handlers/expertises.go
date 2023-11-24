@@ -10,9 +10,9 @@ import (
 // @Description List all expertises
 // @Tags Expertises
 // @Produce json
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResults[[]models.Expertise]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[[]models.Expertise]
 // @Security ApiKeyAuth
 // @Router /expertises [get]
 func ListExpertises(c *fiber.Ctx) error {

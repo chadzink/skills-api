@@ -8,7 +8,7 @@ import (
 
 // TestListExpertise tests the GET /skills route
 func (suite *TestWithDbSuite) TestListExpertise() {
-	suite.updateGoldenFile = true
+	// suite.updateGoldenFile = true
 
 	// Create a request to the expertise route
 	req := suite.GetJwtRequest(http.MethodGet, "/expertises", nil)

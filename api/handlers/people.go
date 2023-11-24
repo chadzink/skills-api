@@ -12,10 +12,10 @@ import (
 // @Tags People
 // @Accept json
 // @Produce json
-// @Param person body interface{} true "Person JSON object that needs to be created"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param person body models.Person true "Person JSON object that needs to be created"
+// @Success 200 {object} ResponseResult[models.Person]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[models.Person]
 // @Security ApiKeyAuth
 // @Router /person [post]
 func CreatePerson(c *fiber.Ctx) error {
@@ -35,9 +35,9 @@ func CreatePerson(c *fiber.Ctx) error {
 // @Tags People
 // @Produce json
 // @Param id path int true "Person ID"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[models.Person]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Person]
 // @Security ApiKeyAuth
 // @Router /person/{id} [get]
 func ListPerson(c *fiber.Ctx) error {
@@ -59,9 +59,9 @@ func ListPerson(c *fiber.Ctx) error {
 // @Description List all people
 // @Tags People
 // @Produce json
-// @Success 200 {object} []interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[[]models.Person]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResult[[]models.Person]
 // @Security ApiKeyAuth
 // @Router /people [get]
 func ListPeople(c *fiber.Ctx) error {
@@ -82,10 +82,10 @@ func ListPeople(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Person ID"
-// @Param person body interface{} true "Person JSON object that needs to be updated"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Param person body models.Person true "Person JSON object that needs to be updated"
+// @Success 200 {object} ResponseResult[models.Person]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Person]
 // @Security ApiKeyAuth
 // @Router /person/{id} [put]
 func UpdatePerson(c *fiber.Ctx) error {
@@ -115,9 +115,9 @@ func UpdatePerson(c *fiber.Ctx) error {
 // @Accept json
 // @Produce json
 // @Param id path int true "Person ID"
-// @Success 200 {object} interface{}
-// @Failure 400 {object} interface{}
-// @Failure 500 {object} interface{}
+// @Success 200 {object} ResponseResult[models.Person]
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} InvalidIdResult[models.Person]
 // @Security ApiKeyAuth
 // @Router /person/{id} [delete]
 func DeletePerson(c *fiber.Ctx) error {
