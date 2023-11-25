@@ -31,3 +31,9 @@ make dev
 ## Test Driven Development (TDD)
 Currently you can run the test from the `api` folder by using the command `make test`. This should run all the current tests for the API endpoints.
 When you make changes to the project, it is suggested that you start by creating a new test file in the `api/tests` folder. The tests should use an in memory Sqlite database that uses the same schema of the PostgreSQL database.
+
+## API Documentation
+The API documentation is done with Swagger OpenAPI specifications using [swaggo/fiber-swagger](https://github.com/swaggo/fiber-swagger).
+
+## TO DO
+Look into validation example in: https://dev.to/koddr/build-a-restful-api-on-go-fiber-postgresql-jwt-and-swagger-docs-in-isolated-docker-containers-475j

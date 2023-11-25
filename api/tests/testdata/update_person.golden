@@ -1,12 +1,10 @@
 {
 	"data": {
-		"ID": 4,
 		"email": "richard@email.com",
 		"name": "Richard",
 		"person_skills": [
 			{
 				"expertise": {
-					"ID": 1,
 					"description": "A beginner is a person who is starting to learn or do something.",
 					"name": "Beginner",
 					"order": 1
@@ -15,7 +13,6 @@
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
 				"skill": {
-					"ID": 3,
 					"active": true,
 					"categories": null,
 					"category_ids": null,
@@ -27,7 +24,6 @@
 			},
 			{
 				"expertise": {
-					"ID": 5,
 					"description": "N/A is used when the level of expertise is not applicable.",
 					"name": "N/A",
 					"order": 5
@@ -36,7 +32,6 @@
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
 				"skill": {
-					"ID": 4,
 					"active": true,
 					"categories": null,
 					"category_ids": null,
@@ -48,7 +43,6 @@
 			},
 			{
 				"expertise": {
-					"ID": 1,
 					"description": "A beginner is a person who is starting to learn or do something.",
 					"name": "Beginner",
 					"order": 1
@@ -57,7 +51,6 @@
 				"last_used": "0001-01-01T00:00:00Z",
 				"person_id": 4,
 				"skill": {
-					"ID": 1,
 					"active": true,
 					"categories": null,
 					"category_ids": null,
@@ -72,5 +65,5 @@
 		"profile": "Drew is a civil engineer with 15 years of experience."
 	},
 	"success": true,
-	"message": ""
+	"message": "Operation was successful"
 }

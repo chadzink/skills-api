@@ -7,15 +7,35 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type ResponseResult struct {
-	Data    map[string]interface{} `json:"data"`
-	Success bool                   `json:"success"`
-	Message string                 `json:"message"`
+type ErrorResponse struct {
+	Error string `json:"error"`
 }
 
-type ResponseResults struct {
-	ResponseResult
-	Data []map[string]interface{} `json:"data"`
+type ResponseResult[T any] struct {
+	Data    T      `json:"data"`
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
+type ResponseResults[T any] struct {
+	ResponseResult[T]
+	Data []T `json:"data"`
+}
+
+type InvalidIdResult[T any] struct {
+	ResponseResult[T]
+	Success   bool        `json:"success" example:"false"`
+	InvalidId interface{} `json:"invalid_id"`
+}
+
+type ErrorResult[T any] struct {
+	ResponseResult[T]
+	Success bool `json:"success" example:"false"`
+}
+
+type DeletResponse[T any] struct {
+	ResponseResult[T]
+	Id interface{} `json:"id"`
 }
 
 func GetValidId(c *fiber.Ctx) (uint, error) {
@@ -34,32 +54,46 @@ func GetValidId(c *fiber.Ctx) (uint, error) {
 }
 
 func HandleInvalidId(c *fiber.Ctx, err error) error {
-	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-		"message":    err.Error(),
-		"success":    false,
-		"invalid_id": c.Params("id"),
-	})
+	response := InvalidIdResult[interface{}]{
+		ResponseResult: ResponseResult[interface{}]{
+			Success: false,
+			Message: err.Error(),
+		},
+		InvalidId: c.Params("id"),
+	}
+
+	return c.Status(fiber.StatusInternalServerError).JSON(response)
 }
 
 func ErorrAndDataResponse(c *fiber.Ctx, err error, data interface{}) error {
-	return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-		"message": err.Error(),
-		"success": false,
-		"data":    data,
-	})
+	response := ErrorResult[interface{}]{
+		ResponseResult: ResponseResult[interface{}]{
+			Data:    data,
+			Success: false,
+			Message: err.Error(),
+		},
+	}
+
+	return c.Status(fiber.StatusInternalServerError).JSON(response)
 }
 
 func DataResponse(c *fiber.Ctx, data interface{}) error {
-	return c.Status(200).JSON(fiber.Map{
-		"success": true,
-		"data":    data,
-	})
+	response := ResponseResult[interface{}]{
+		Data:    data,
+		Success: true,
+		Message: "Operation was successful",
+	}
+
+	return c.Status(200).JSON(response)
 }
 
 func DeletedResponse(c *fiber.Ctx, message string, id interface{}) error {
-	return c.Status(200).JSON(fiber.Map{
-		"success": true,
-		"message": message,
-		"id":      id,
-	})
+	response := DeletResponse[interface{}]{
+		ResponseResult: ResponseResult[interface{}]{
+			Success: true,
+			Message: message,
+		},
+		Id: id,
+	}
+	return c.Status(200).JSON(response)
 }

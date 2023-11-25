@@ -26,7 +26,7 @@ type RegisterRequest struct {
 
 // Type for a user
 type User struct {
-	gorm.Model
+	gorm.Model     `json:"-" swaggerignore:"true"`
 	DisplayName    string `json:"display_name" gorm:"text;not null"`
 	Email          string `json:"email" gorm:"text;not null;unique"`
 	Password       string `json:"password" gorm:"text;not null"`

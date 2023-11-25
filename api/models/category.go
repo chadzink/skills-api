@@ -5,16 +5,16 @@ import (
 )
 
 type Category struct {
-	gorm.Model
+	gorm.Model  `json:"-" swaggerignore:"true"`
 	Name        string `json:"name" gorm:"text;not null`
 	Description string `json:"description" gorm:"text;null;default:null`
 	ShortKey    string `json:"short_key" gorm:"varchar(10);not null;default:null`
 	Active      bool   `json:"active" gorm:"bit;not null;default:1`
 
-	Skills []*Skill `json:"skills" gorm:"many2many:skill_category;"`
+	Skills []*Skill `json:"skills" gorm:"many2many:skill_category;" swaggerignore:"true"`
 
 	// Additional fields that are not stored in the database
-	SkillIds []uint `json:"skill_ids" gorm:"-"`
+	SkillIds []uint `json:"skill_ids" gorm:"-" swaggerignore:"true"`
 }
 
 // Example of categories in JSON

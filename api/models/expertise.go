@@ -5,7 +5,7 @@ import (
 )
 
 type Expertise struct {
-	gorm.Model
+	gorm.Model  `json:"-" swaggerignore:"true"`
 	Name        string `json:"name" gorm:"text;not null`
 	Description string `json:"description" gorm:"text;null;default:null`
 	Order       int    `json:"order" gorm:"int;not null;default:0`

@@ -1,6 +1,5 @@
 {
 	"data": {
-		"ID": 5,
 		"active": true,
 		"description": "Operations is the process of operating a business.",
 		"name": "Updated Category Name",
@@ -11,7 +10,6 @@
 		],
 		"skills": [
 			{
-				"ID": 3,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -20,7 +18,6 @@
 				"short_key": "py"
 			},
 			{
-				"ID": 4,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -29,7 +26,6 @@
 				"short_key": "java"
 			},
 			{
-				"ID": 3,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -38,7 +34,6 @@
 				"short_key": "py"
 			},
 			{
-				"ID": 4,
 				"active": true,
 				"categories": null,
 				"category_ids": null,
@@ -49,5 +44,5 @@
 		]
 	},
 	"success": true,
-	"message": ""
+	"message": "Operation was successful"
 }

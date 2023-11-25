@@ -8,3 +8,6 @@ test-short:
 
 build:
 	go build -buildvcs=false -o ./tmp/main .
+
+docs:
+	swag init

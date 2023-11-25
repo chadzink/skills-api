@@ -1,13 +1,11 @@
 {
 	"success": true,
-	"message": "",
+	"message": "Operation was successful",
 	"data": [
 		{
-			"ID": 1,
 			"active": true,
 			"categories": [
 				{
-					"ID": 1,
 					"active": true,
 					"description": "A programming language is a formal language comprising a set of instructions that produce various kinds of output. Programming languages are used in computer programming to implement algorithms.",
 					"name": "Programming Language",
@@ -16,7 +14,6 @@
 					"skills": null
 				},
 				{
-					"ID": 2,
 					"active": true,
 					"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
 					"name": "Databases",
@@ -34,11 +31,9 @@
 			"short_key": "go"
 		},
 		{
-			"ID": 2,
 			"active": true,
 			"categories": [
 				{
-					"ID": 2,
 					"active": true,
 					"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
 					"name": "Databases",
@@ -47,7 +42,6 @@
 					"skills": null
 				},
 				{
-					"ID": 3,
 					"active": true,
 					"description": "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs.",
 					"name": "Operating Systems",
@@ -65,11 +59,9 @@
 			"short_key": "js"
 		},
 		{
-			"ID": 3,
 			"active": true,
 			"categories": [
 				{
-					"ID": 3,
 					"active": true,
 					"description": "An operating system is system software that manages computer hardware, software resources, and provides common services for computer programs.",
 					"name": "Operating Systems",
@@ -78,7 +70,6 @@
 					"skills": null
 				},
 				{
-					"ID": 4,
 					"active": true,
 					"description": "A cloud provider is a company that offers some component of cloud computing -- typically infrastructure as a service, software as a service or platform as a service -- to other businesses or individuals.",
 					"name": "Cloud Providers",
@@ -96,11 +87,9 @@
 			"short_key": "py"
 		},
 		{
-			"ID": 4,
 			"active": true,
 			"categories": [
 				{
-					"ID": 2,
 					"active": true,
 					"description": "A database is an organized collection of structured information, or data, typically stored electronically in a computer system. A database is usually controlled by a database management system.",
 					"name": "Databases",
@@ -109,7 +98,6 @@
 					"skills": null
 				},
 				{
-					"ID": 4,
 					"active": true,
 					"description": "A cloud provider is a company that offers some component of cloud computing -- typically infrastructure as a service, software as a service or platform as a service -- to other businesses or individuals.",
 					"name": "Cloud Providers",
