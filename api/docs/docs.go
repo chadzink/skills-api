@@ -36,7 +36,7 @@ const docTemplate = `{
                 "summary": "Home",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Welcome to the skils API!",
                         "schema": {
                             "type": "string"
                         }
@@ -1012,6 +1012,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/api_key": {
+            "post": {
+                "description": "Create a new API Key",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Create a new API Key",
+                "parameters": [
+                    {
+                        "description": "Create API Key JSON object that needs to be created",
+                        "name": "apiKeyRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.NewAPIKeyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ResponseResult-array_models_UserAPIKey"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/version": {
             "get": {
                 "description": "Version route",
@@ -1263,6 +1315,23 @@ const docTemplate = `{
                 }
             }
         },
+        "handlers.ResponseResult-array_models_UserAPIKey": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.UserAPIKey"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "handlers.ResponseResult-models_Category": {
             "type": "object",
             "properties": {
@@ -1384,6 +1453,20 @@ const docTemplate = `{
                 }
             }
         },
+        "models.NewAPIKeyRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "expires_on": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "models.Person": {
             "type": "object",
             "properties": {
@@ -1429,6 +1512,20 @@ const docTemplate = `{
                 },
                 "short_key": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UserAPIKey": {
+            "type": "object",
+            "properties": {
+                "expires_on": {
+                    "type": "string"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         }

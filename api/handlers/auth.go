@@ -122,14 +122,33 @@ func RegisterNewUser(c *fiber.Ctx) error {
 }
 
 // Create UserAPIKey handler, this generated a unique API key string for the user based on the user ID
+// @Summary Create a new API Key
+// @Description Create a new API Key
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param apiKeyRequest body models.NewAPIKeyRequest true "Create API Key JSON object that needs to be created"
+// @Success 200 {object} ResponseResult[[]models.UserAPIKey]
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /user/api_key [post]
 func CreateAPIKey(c *fiber.Ctx) error {
+
+	apiKeyRequest := new(models.NewAPIKeyRequest)
+	if err := c.BodyParser(apiKeyRequest); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(ErrorResponse{
+			Error: err.Error(),
+		})
+	}
+
 	// Create the API Key
-	apiKey, err := database.DAL.CreateUserAPIKey()
+	apiKey, err := database.DAL.CreateUserAPIKey(apiKeyRequest)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(apiKey)
+	return DataResponse(c, apiKey)
 }

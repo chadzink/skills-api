@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"skills-api/auth"
 	"skills-api/database"
 	"skills-api/handlers"
+	"skills-api/middleware"
 
 	_ "skills-api/docs"
 
@@ -15,7 +15,7 @@ import (
 )
 
 func setupRoutes(app *fiber.App) {
-	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
+	authMiddleware := middleware.NewAuthMiddleware()
 
 	app.Get("/", handlers.Default)
 	app.Get("/version", handlers.Version)

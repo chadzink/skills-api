@@ -8,10 +8,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
-	"skills-api/auth"
 	"skills-api/database"
 	"skills-api/handlers"
+	"skills-api/middleware"
 	"skills-api/models"
 
 	"github.com/gofiber/fiber/v2"
@@ -29,6 +30,7 @@ type TestWithDbSuite struct {
 	db               *gorm.DB
 	updateGoldenFile bool
 	jwt              string
+	apiKey           models.VerifyAPIKeyRequest
 }
 
 // Make sure that VariableThatShouldStartAtFive is set to five
@@ -43,6 +45,9 @@ func (suite *TestWithDbSuite) SetupTest() {
 	if err != nil {
 		log.Fatalf("Error opening database: %v", err)
 	}
+
+	suite.jwt = ""
+	suite.apiKey = models.VerifyAPIKeyRequest{}
 
 	suite.db = conn
 	database.DAL.Db = suite.db
@@ -67,14 +72,14 @@ func TestWithDbRunSuite(t *testing.T) {
 }
 
 func setupTestRoutes(a *fiber.App) {
-	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
+	authMiddleware := middleware.NewAuthMiddleware()
 
 	// Create a Login route
 	a.Post("/auth/login", handlers.Login)
 	a.Post("/auth/register", handlers.RegisterNewUser)
 
 	// Set up the routes for create user API key
-	a.Post("/user/api_key", handlers.CreateAPIKey)
+	a.Post("/user/api_key", authMiddleware, handlers.CreateAPIKey)
 
 	// Set up the routes for categories
 	a.Post("/category", authMiddleware, handlers.CreateCategory)
@@ -137,10 +142,10 @@ func (suite *TestWithDbSuite) CheckResponsesToGoldenFile(name string, filename s
 }
 
 // This func of the suite is used to login and get a JWT token
-func (suit *TestWithDbSuite) GetJwtToken() string {
+func (suite *TestWithDbSuite) GetJwtToken() string {
 	// Check if the suite jwt is already set
-	if suit.jwt != "" {
-		return suit.jwt
+	if suite.jwt != "" {
+		return suite.jwt
 	}
 
 	loginInfo := models.LoginRequest{
@@ -153,25 +158,65 @@ func (suit *TestWithDbSuite) GetJwtToken() string {
 
 	req := httptest.NewRequest(http.MethodPost, "/auth/login", bytes.NewReader(reqBodyJson))
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
-	resp, _ := suit.app.Test(req)
+	resp, _ := suite.app.Test(req)
 
 	// Confirm that the response status code is 200
-	assert.Equal(suit.T(), 200, resp.StatusCode)
+	assert.Equal(suite.T(), 200, resp.StatusCode)
 
 	// Confirm that the response body has a token
 	defer resp.Body.Close()
 	if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
-		suit.T().Error(err)
+		suite.T().Error(err)
 	} else {
 		var loginResponse models.LoginResponse
 		if err := json.Unmarshal(bodyBytes, &loginResponse); err != nil {
-			suit.T().Error(err)
+			suite.T().Error(err)
 		}
 
-		suit.jwt = loginResponse.Token
+		suite.jwt = loginResponse.Token
 	}
 
-	return suit.jwt
+	return suite.jwt
+}
+
+// This func of the suite is used to create a new user API key and set the verify API key request
+func (suite *TestWithDbSuite) GetAPIKey() models.VerifyAPIKeyRequest {
+	// Check if the suite jwt is already set
+	if suite.apiKey != (models.VerifyAPIKeyRequest{}) {
+		return suite.apiKey
+	}
+
+	apiKeyRequestForUser := models.NewAPIKeyRequest{
+		Email:    "test.user@email.com",
+		Password: "testpassword",
+		// Expires on 3 days from current date and time
+		ExpiresOn: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day()+3, time.Now().Hour(), time.Now().Minute(), time.Now().Second(), time.Now().Nanosecond(), time.Now().Location()),
+	}
+
+	// Create a Login request
+	reqBodyJson, _ := json.Marshal(apiKeyRequestForUser)
+
+	// Create a request to the user API key route
+	req := httptest.NewRequest(http.MethodPost, "/user/api_key", bytes.NewReader(reqBodyJson))
+	resp, _ := suite.app.Test(req)
+
+	// Confirm that the response status code is 200
+	assert.Equal(suite.T(), 200, resp.StatusCode)
+
+	// Confirm that the response body has a token
+	defer resp.Body.Close()
+	if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
+		suite.T().Error(err)
+	} else {
+		var apiKeyResponse models.VerifyAPIKeyRequest
+		if err := json.Unmarshal(bodyBytes, &apiKeyResponse); err != nil {
+			suite.T().Error(err)
+		}
+
+		suite.apiKey = apiKeyResponse
+	}
+
+	return suite.apiKey
 }
 
 // get an HTTP request object that has the JWT token in the header when given a method, route, and body
@@ -180,6 +225,18 @@ func (suit *TestWithDbSuite) GetJwtRequest(method string, route string, body io.
 	req := httptest.NewRequest(method, route, body)
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
 	req.Header.Set("Authorization", "Bearer "+suit.GetJwtToken())
+	return req
+}
+
+// get an HTTP request object that has the User API Key in the header when given a method, route, and body
+func (suit *TestWithDbSuite) GetUserAPIKeyRequest(method string, route string, body io.Reader) *http.Request {
+	// First create or get the user api key
+	apiKey := suit.GetAPIKey()
+
+	req := httptest.NewRequest(method, route, body)
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req.Header.Set("X-API-Email", apiKey.Email)
+	req.Header.Set("X-API-Key", apiKey.Key)
 	return req
 }
 

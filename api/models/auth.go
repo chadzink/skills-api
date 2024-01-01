@@ -24,6 +24,19 @@ type RegisterRequest struct {
 	Password    string `json:"password"`
 }
 
+// Type for the new API key request
+type NewAPIKeyRequest struct {
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	ExpiresOn time.Time `json:"expires_on"`
+}
+
+// Type for the new API key request
+type VerifyAPIKeyRequest struct {
+	Email string `json:"email"`
+	Key   string `json:"key"`
+}
+
 // Type for a user
 type User struct {
 	gorm.Model     `json:"-" swaggerignore:"true"`
@@ -35,8 +48,8 @@ type User struct {
 }
 
 type UserAPIKey struct {
-	gorm.Model
-	UserID    uint      `json:"user_id" gorm:"int;not null"`
-	Key       string    `json:"key" gorm:"text;not null;unique"`
-	ExpiresOn time.Time `json:"expires_on" gorm:"timestamp;not null"`
+	gorm.Model `json:"-" swaggerignore:"true"`
+	UserID     uint      `json:"user_id" gorm:"int;not null"`
+	Key        string    `json:"key" gorm:"text;not null;unique"`
+	ExpiresOn  time.Time `json:"expires_on" gorm:"timestamp;not null"`
 }

@@ -2,9 +2,10 @@ package auth
 
 import (
 	"crypto/md5"
-	"crypto/rand"
 	"encoding/hex"
 	"errors"
+	mathRand "math/rand"
+	"time"
 )
 
 //TO DO: Make these stronger with bcrypt and add a salt
@@ -36,27 +37,16 @@ func CheckPassword(password, encoded string) error {
 	return nil
 }
 
-// The GenerateRandomString method generates a random string of a specified length
-func GenerateRandomString(length int) (string, error) {
+func GenerateRandomUTF8String(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyz" +
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" +
+		"1234567890"
 
-	generateRandomBytes := func(n int) ([]byte, error) {
-		// Create a byte slice of the specified length
-		b := make([]byte, n)
+	seededRand := mathRand.New(mathRand.NewSource(time.Now().UnixNano()))
 
-		// Generate random bytes and store them in the byte slice
-		if _, err := rand.Read(b); err != nil {
-			return nil, err
-		}
-
-		return b, nil
-
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
 	}
-
-	// Generate a random string of a specified length
-	randomString, err := generateRandomBytes(length)
-	if err != nil {
-		return "", err
-	}
-
-	return string(randomString), nil
+	return string(b)
 }

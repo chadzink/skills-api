@@ -72,23 +72,51 @@ func (dal *DataAccessLayer) RegisterNewUser(email, displayName, password string)
 }
 
 // The CreateUserAPIKey method generates a unique API key string for the user based on the user ID
-func (dal *DataAccessLayer) CreateUserAPIKey() (string, error) {
+func (dal *DataAccessLayer) CreateUserAPIKey(requestBy *models.NewAPIKeyRequest) (*models.UserAPIKey, error) {
 	// Generate a new API key
-	apiKey, err := auth.GenerateRandomString(32)
+	apiKey := auth.GenerateRandomUTF8String(50)
+
+	// Find the user by email address and password
+	user, err := dal.FindUserByCredentials(requestBy.Email, requestBy.Password)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	// Check if the API key already exists
-	var existingUser models.User
-	if err := dal.Db.Where("api_key = ?", apiKey).First(&existingUser).Error; err == nil {
-		return "", errors.New("api key already exists")
+	existingUserApiKey := &models.UserAPIKey{
+		UserID:    user.ID,
+		ExpiresOn: requestBy.ExpiresOn,
+		Key:       apiKey,
+	}
+	if err := dal.Db.Where(existingUserApiKey).First(&existingUserApiKey).Error; err == nil {
+		return nil, errors.New("api key already exists")
 	}
 
-	// Update the user with the new API key
-	if err := dal.Db.Model(&existingUser).Update("api_key", apiKey).Error; err != nil {
-		return "", err
+	// Add the API key to the database for the user
+	if err := dal.Db.Create(existingUserApiKey).Error; err != nil {
+		return nil, err
 	}
 
-	return apiKey, nil
+	return existingUserApiKey, nil
+}
+
+// Check a UserAPIKey method takes a string values and checks if it is a valid API key, then returns the users
+func (dal *DataAccessLayer) VerifyUserAPIKey(verifyRequest models.VerifyAPIKeyRequest) (*models.UserAPIKey, error) {
+	// Find user by email
+	var user models.User
+	if err := dal.Db.Where("email = ?", verifyRequest.Email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	existingUserApiKey := &models.UserAPIKey{
+		UserID: user.ID,
+		Key:    verifyRequest.Key,
+	}
+
+	// Find users API key
+	if err := dal.Db.Where(existingUserApiKey).First(&existingUserApiKey).Error; err != nil {
+		return nil, err
+	}
+
+	return existingUserApiKey, nil
 }
