@@ -127,3 +127,54 @@ func (suite *TestWithDbSuite) TestCreateAPIKeyForUser() {
 		assert.Equal(suite.T(), 200, resp.StatusCode)
 	}
 }
+
+// Test get current user by token and api key
+func (suite *TestWithDbSuite) TestGetCurrentUser() {
+	// Create a Login request
+	reqBodyJson, _ := json.Marshal(TEST_DATA_LOGIN_REQUESTS)
+	var loginResponse models.LoginResponse
+
+	// Create a request to the login route
+	req := httptest.NewRequest(http.MethodPost, "/auth/login", bytes.NewReader(reqBodyJson))
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	resp, _ := suite.app.Test(req)
+
+	// Confirm that the response status code is 200
+	assert.Equal(suite.T(), 200, resp.StatusCode)
+
+	// Confirm that the response body has a token
+	defer resp.Body.Close()
+	if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
+		suite.T().Error(err)
+	} else {
+		if err := json.Unmarshal(bodyBytes, &loginResponse); err != nil {
+			suite.T().Error(err)
+		}
+
+		assert.NotEmpty(suite.T(), loginResponse.Token, "Token should not be empty")
+	}
+
+	// Create a request to the user route
+	req = httptest.NewRequest(http.MethodGet, "/user", nil)
+	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	req.Header.Set("Authorization", "Bearer "+loginResponse.Token)
+	resp, _ = suite.app.Test(req)
+
+	// Confirm that the response status code is 200
+	assert.Equal(suite.T(), 200, resp.StatusCode)
+
+	// Confirm that the response body has a token
+	defer resp.Body.Close()
+	if bodyBytes, err := io.ReadAll(resp.Body); err != nil {
+		suite.T().Error(err)
+	} else {
+		var respResult handlers.ResponseResult[models.User]
+		if err := json.Unmarshal(bodyBytes, &respResult); err != nil {
+			suite.T().Error(err)
+		}
+
+		var user models.User = respResult.Data
+
+		assert.NotEmpty(suite.T(), user.Email, "Email should not be empty")
+	}
+}

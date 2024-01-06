@@ -2,6 +2,7 @@ package database
 
 import (
 	"errors"
+	"time"
 
 	"skills-api/auth"
 	"skills-api/models"
@@ -118,5 +119,32 @@ func (dal *DataAccessLayer) VerifyUserAPIKey(verifyRequest models.VerifyAPIKeyRe
 		return nil, err
 	}
 
+	// Check if the API key is expired
+	if existingUserApiKey.ExpiresOn.Before(time.Now()) {
+		return nil, errors.New("api key expired")
+	}
+
 	return existingUserApiKey, nil
+}
+
+// List all API keys for a user
+func (dal *DataAccessLayer) ListUserAPIKeys(userID uint) ([]models.UserAPIKey, error) {
+	var userAPIKeys []models.UserAPIKey
+
+	if err := dal.Db.Where("user_id = ?", userID).Find(&userAPIKeys).Error; err != nil {
+		return nil, err
+	}
+
+	return userAPIKeys, nil
+}
+
+// Get a user by Email
+func (dal *DataAccessLayer) FindUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	if err := dal.Db.Where("email = ?", email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

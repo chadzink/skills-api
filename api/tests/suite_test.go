@@ -67,6 +67,7 @@ func (suite *TestWithDbSuite) TearDownSuite() {
 
 // In order for 'go test' to run this suite, we need to create
 // a normal test function and pass our suite to suite.Run
+// START DEBUG HERE
 func TestWithDbRunSuite(t *testing.T) {
 	suite.Run(t, new(TestWithDbSuite))
 }
@@ -79,6 +80,7 @@ func setupTestRoutes(a *fiber.App) {
 	a.Post("/auth/register", handlers.RegisterNewUser)
 
 	// Set up the routes for create user API key
+	a.Get("/user", authMiddleware, handlers.GetCurrentUser)
 	a.Post("/user/api_key", authMiddleware, handlers.CreateAPIKey)
 
 	// Set up the routes for categories

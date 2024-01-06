@@ -9,11 +9,6 @@ import (
 	jwtware "github.com/gofiber/jwt/v3"
 )
 
-var AuthType = map[string]int{
-	"Bearer": 1,
-	"APIKey": 2,
-}
-
 func NewBearerAuthMiddleware(secret string) fiber.Handler {
 	return jwtware.New(jwtware.Config{
 		SigningKey: []byte(secret),
