@@ -2,6 +2,7 @@ package database
 
 import (
 	"errors"
+	"time"
 
 	"skills-api/auth"
 	"skills-api/models"
@@ -65,6 +66,83 @@ func (dal *DataAccessLayer) RegisterNewUser(email, displayName, password string)
 	}
 
 	if err := dal.Db.Create(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+// The CreateUserAPIKey method generates a unique API key string for the user based on the user ID
+func (dal *DataAccessLayer) CreateUserAPIKey(requestBy *models.NewAPIKeyRequest) (*models.UserAPIKey, error) {
+	// Generate a new API key
+	apiKey := auth.GenerateRandomUTF8String(50)
+
+	// Find the user by email address and password
+	user, err := dal.FindUserByCredentials(requestBy.Email, requestBy.Password)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the API key already exists
+	existingUserApiKey := &models.UserAPIKey{
+		UserID:    user.ID,
+		ExpiresOn: requestBy.ExpiresOn,
+		Key:       apiKey,
+	}
+	if err := dal.Db.Where(existingUserApiKey).First(&existingUserApiKey).Error; err == nil {
+		return nil, errors.New("api key already exists")
+	}
+
+	// Add the API key to the database for the user
+	if err := dal.Db.Create(existingUserApiKey).Error; err != nil {
+		return nil, err
+	}
+
+	return existingUserApiKey, nil
+}
+
+// Check a UserAPIKey method takes a string values and checks if it is a valid API key, then returns the users
+func (dal *DataAccessLayer) VerifyUserAPIKey(verifyRequest models.VerifyAPIKeyRequest) (*models.UserAPIKey, error) {
+	// Find user by email
+	var user models.User
+	if err := dal.Db.Where("email = ?", verifyRequest.Email).First(&user).Error; err != nil {
+		return nil, err
+	}
+
+	existingUserApiKey := &models.UserAPIKey{
+		UserID: user.ID,
+		Key:    verifyRequest.Key,
+	}
+
+	// Find users API key
+	if err := dal.Db.Where(existingUserApiKey).First(&existingUserApiKey).Error; err != nil {
+		return nil, err
+	}
+
+	// Check if the API key is expired
+	if existingUserApiKey.ExpiresOn.Before(time.Now()) {
+		return nil, errors.New("api key expired")
+	}
+
+	return existingUserApiKey, nil
+}
+
+// List all API keys for a user
+func (dal *DataAccessLayer) ListUserAPIKeys(userID uint) ([]models.UserAPIKey, error) {
+	var userAPIKeys []models.UserAPIKey
+
+	if err := dal.Db.Where("user_id = ?", userID).Find(&userAPIKeys).Error; err != nil {
+		return nil, err
+	}
+
+	return userAPIKeys, nil
+}
+
+// Get a user by Email
+func (dal *DataAccessLayer) FindUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	if err := dal.Db.Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 

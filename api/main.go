@@ -3,9 +3,9 @@ package main
 import (
 	"os"
 
-	"skills-api/auth"
 	"skills-api/database"
 	"skills-api/handlers"
+	"skills-api/middleware"
 
 	_ "skills-api/docs"
 
@@ -15,7 +15,7 @@ import (
 )
 
 func setupRoutes(app *fiber.App) {
-	authMiddleware := auth.NewAuthMiddleware(auth.JWTSecretKey)
+	authMiddleware := middleware.NewAuthMiddleware()
 
 	app.Get("/", handlers.Default)
 	app.Get("/version", handlers.Version)
@@ -23,6 +23,10 @@ func setupRoutes(app *fiber.App) {
 	// Create a Login route
 	app.Post("/auth/login", handlers.Login)
 	app.Post("/auth/register", handlers.RegisterNewUser)
+
+	// Set up the routes for create user API key
+	app.Get("/user", authMiddleware, handlers.GetCurrentUser)
+	app.Post("/user/api_key", authMiddleware, handlers.CreateAPIKey)
 
 	// CRUD for skill entity
 	app.Post("/skill", authMiddleware, handlers.CreateSkill)

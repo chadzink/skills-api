@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	mathRand "math/rand"
+	"time"
 )
 
 //TO DO: Make these stronger with bcrypt and add a salt
@@ -33,4 +35,18 @@ func CheckPassword(password, encoded string) error {
 	}
 
 	return nil
+}
+
+func GenerateRandomUTF8String(length int) string {
+	const charset = "abcdefghijklmnopqrstuvwxyz" +
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" +
+		"1234567890"
+
+	seededRand := mathRand.New(mathRand.NewSource(time.Now().UnixNano()))
+
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
 }

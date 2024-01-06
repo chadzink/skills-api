@@ -152,6 +152,17 @@ definitions:
       success:
         type: boolean
     type: object
+  handlers.ResponseResult-array_models_UserAPIKey:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.UserAPIKey'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   handlers.ResponseResult-models_Category:
     properties:
       data:
@@ -174,6 +185,15 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/models.Skill'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  handlers.ResponseResult-models_User:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
       message:
         type: string
       success:
@@ -230,6 +250,15 @@ definitions:
       token:
         type: string
     type: object
+  models.NewAPIKeyRequest:
+    properties:
+      email:
+        type: string
+      expires_on:
+        type: string
+      password:
+        type: string
+    type: object
   models.Person:
     properties:
       email:
@@ -261,6 +290,28 @@ definitions:
       short_key:
         type: string
     type: object
+  models.User:
+    properties:
+      display_name:
+        type: string
+      email:
+        type: string
+      failed_attempts:
+        type: integer
+      locked:
+        type: boolean
+      password:
+        type: string
+    type: object
+  models.UserAPIKey:
+    properties:
+      expires_on:
+        type: string
+      key:
+        type: string
+      user_id:
+        type: integer
+    type: object
 info:
   contact:
     email: me@chadzink.com
@@ -282,7 +333,7 @@ paths:
       - text/plain
       responses:
         "200":
-          description: OK
+          description: Welcome to the skils API!
           schema:
             type: string
       summary: Home
@@ -903,6 +954,63 @@ paths:
       summary: Create one or more new skills
       tags:
       - Skills
+  /user:
+    get:
+      description: Get the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get the current user
+      tags:
+      - Auth
+  /user/api_key:
+    post:
+      consumes:
+      - application/json
+      description: Create a new API Key
+      parameters:
+      - description: Create API Key JSON object that needs to be created
+        in: body
+        name: apiKeyRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.NewAPIKeyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-array_models_UserAPIKey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: Create a new API Key
+      tags:
+      - Auth
   /version:
     get:
       description: Version route
