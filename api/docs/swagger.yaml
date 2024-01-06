@@ -190,6 +190,15 @@ definitions:
       success:
         type: boolean
     type: object
+  handlers.ResponseResult-models_User:
+    properties:
+      data:
+        $ref: '#/definitions/models.User'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   handlers.ResponseResults-array_models_Expertise:
     properties:
       data:
@@ -279,6 +288,19 @@ definitions:
       name:
         type: string
       short_key:
+        type: string
+    type: object
+  models.User:
+    properties:
+      display_name:
+        type: string
+      email:
+        type: string
+      failed_attempts:
+        type: integer
+      locked:
+        type: boolean
+      password:
         type: string
     type: object
   models.UserAPIKey:
@@ -932,6 +954,29 @@ paths:
       summary: Create one or more new skills
       tags:
       - Skills
+  /user:
+    get:
+      description: Get the current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResponseResult-models_User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get the current user
+      tags:
+      - Auth
   /user/api_key:
     post:
       consumes:
